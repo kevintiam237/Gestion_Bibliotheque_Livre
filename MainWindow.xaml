@@ -1,0 +1,372 @@
+﻿<Window x:Class="Gestion_Bibliotheque_Livre.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Gestion_Bibliotheque_Livre"
+    xmlns:properties="clr-namespace:Gestion_Bibliotheque_Livre.Properties"
+    mc:Ignorable="d"
+    Title="{x:Static properties:Resources.TitleApp}" 
+    Height="700" 
+    Width="1200"
+    WindowStartupLocation="CenterScreen"
+    Background="{StaticResource BackgroundBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- En-tête -->
+        <Border Grid.Row="0" Style="{StaticResource AppHeaderStyle}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="{x:Static properties:Resources.LibraryManagementSystem}"
+                               x:Name="TitleTextBlock"
+                               Style="{StaticResource TitleTextBlockStyle}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" 
+                           Orientation="Horizontal" 
+                           VerticalAlignment="Center">
+                    <Button Content="{x:Static properties:Resources.Language}"
+                            x:Name="LangToggleButton"
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Tag="en-US" Click="Button_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Contenu principal avec TabControl -->
+        <TabControl Grid.Row="1" 
+                    Style="{StaticResource ModernTabControlStyle}">
+
+            <!-- Onglet Auteurs -->
+            <TabItem x:Name="TabAuthors" 
+                Header="{x:Static properties:Resources.Authors}" 
+                     Style="{StaticResource ModernTabItemStyle}">
+                <Grid Style="{StaticResource ContentContainerStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="171*"/>
+                        <ColumnDefinition Width="419*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Liste des auteurs -->
+                    <DataGrid Grid.Row="0" 
+                              Style="{StaticResource ModernDataGridStyle}"
+                              ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                              CellStyle="{StaticResource DataGridCellStyle}" Grid.ColumnSpan="2" Margin="10,10,10,10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="ColAuthorID" Header="{x:Static properties:Resources.ID}" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn x:Name="ColAuthorLastName" Header="{x:Static properties:Resources.LastName}" Binding="{Binding Nom}" Width="*"/>
+                            <DataGridTextColumn x:Name="ColAuthorFirstName" Header="{x:Static properties:Resources.FirstName}" Binding="{Binding Prenom}" Width="*"/>
+                            <DataGridTextColumn x:Name="ColAuthorBooksCount" Header="{x:Static properties:Resources.BooksCount}" Binding="{Binding NombreLivres}" Width="200"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Panneau de gestion -->
+                    <GroupBox x:Name="GroupBoxAuthors"
+                              Grid.Row="1" 
+                              Header="{x:Static properties:Resources.AuthorManagement}" 
+                              Style="{StaticResource ModernGroupBoxStyle}" Grid.ColumnSpan="2" Margin="10,10,10,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="5">
+                                <Label x:Name="LabelLastName" Content="{x:Static properties:Resources.LastName}" Style="{StaticResource ModernLabelStyle}"/>
+                                <TextBox x:Name="TxtAuthorLastName" Style="{StaticResource ModernTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" Margin="5">
+                                <Label x:Name="LabelFirstName" Content="{x:Static properties:Resources.FirstName}" Style="{StaticResource ModernLabelStyle}"/>
+                                <TextBox x:Name="TxtAuthorFirstName" Style="{StaticResource ModernTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" 
+                                       VerticalAlignment="Bottom" 
+                                       Orientation="Horizontal"
+                                       Margin="5">
+                                <Button x:Name="BtnAddAuthor" Content="{x:Static properties:Resources.Add}" 
+                                        Style="{StaticResource SuccessButtonStyle}"/>
+                                <Button x:Name="BtnEditAuthor" Content="{x:Static properties:Resources.Edit}" 
+                                        Style="{StaticResource PrimaryButtonStyle}"/>
+                                <Button x:Name="BtnDeleteAuthor" Content="{x:Static properties:Resources.Delete}" 
+                                        Style="{StaticResource DeleteButtonStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <!-- Onglet Livres -->
+            <TabItem x:Name="TabBooks"
+                     Header="{x:Static properties:Resources.Books}" 
+                     Style="{StaticResource ModernTabItemStyle}">
+                <Grid Style="{StaticResource ContentContainerStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="31*"/>
+                        <ColumnDefinition Width="77*"/>
+                        <ColumnDefinition Width="482*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Liste des livres -->
+                    <DataGrid Grid.Row="0" 
+                              Style="{StaticResource ModernDataGridStyle}"
+                              ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                              CellStyle="{StaticResource DataGridCellStyle}" Grid.ColumnSpan="3">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="ColBookID" Header="{x:Static properties:Resources.ID}" Binding="{Binding Id}" Width="60"/>
+                            <DataGridTextColumn x:Name="ColBookTitle" Header="{x:Static properties:Resources.BookTitle}" Binding="{Binding Titre}" Width="*"/>
+                            <DataGridTextColumn x:Name="ColBookAuthor" Header="{x:Static properties:Resources.Authors}" Binding="{Binding Auteur}" Width="200"/>
+                            <DataGridTextColumn x:Name="ColBookDate" Header="{x:Static properties:Resources.PublicationDate}" Binding="{Binding DatePublication}" Width="150"/>
+                            <DataGridTextColumn x:Name="ColBookISBN" Header="{x:Static properties:Resources.ISBN}" Binding="{Binding ISBN}" Width="130"/>
+                            <DataGridTextColumn x:Name="ColBookPages" Header="{x:Static properties:Resources.Pages}" Binding="{Binding NombrePages}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Panneau de gestion -->
+                    <GroupBox x:Name="GroupBoxBooks"
+                              Grid.Row="1" 
+                              Header="{x:Static properties:Resources.BookManagement}" 
+                              Style="{StaticResource ModernGroupBoxStyle}" Grid.ColumnSpan="3" Margin="10,10,10,10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Première ligne -->
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="5">
+                                    <Label x:Name="LabelBookTitle" Content="{x:Static properties:Resources.BookTitle}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <TextBox x:Name="TxtBookTitle" Style="{StaticResource ModernTextBoxStyle}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="5">
+                                    <Label x:Name="LabelAuthor" Content="{x:Static properties:Resources.Authors}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <ComboBox x:Name="ComboBoxAuthorSelect" Style="{StaticResource ModernComboBoxStyle}">
+                                        <ComboBoxItem Content="Sélectionner / Select..."/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Margin="5">
+                                    <Label x:Name="LabelDate" Content="{x:Static properties:Resources.PublicationDate}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <DatePicker x:Name="DatePickerPublication" Style="{StaticResource ModernDatePickerStyle}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Deuxième ligne -->
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="5">
+                                    <Label x:Name="LabelISBN" Content="{x:Static properties:Resources.ISBN}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <TextBox x:Name="TxtISBN" Style="{StaticResource ModernTextBoxStyle}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="5">
+                                    <Label x:Name="LabelPages" Content="{x:Static properties:Resources.PagesCount}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <TextBox x:Name="TxtPages" Style="{StaticResource ModernTextBoxStyle}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Margin="5">
+                                    <Label x:Name="LabelCategoriesBook" Content="{x:Static properties:Resources.Categories}" Style="{StaticResource ModernLabelStyle}"/>
+                                    <Button x:Name="BtnManageCategories"
+                                            Content="{x:Static properties:Resources.ManageCategories}" 
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            HorizontalAlignment="Stretch"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="3" 
+                                           VerticalAlignment="Bottom" 
+                                           Orientation="Horizontal"
+                                           Margin="5">
+                                    <Button x:Name="BtnAddBook" Content="{x:Static properties:Resources.Add}" 
+                                            Style="{StaticResource SuccessButtonStyle}"/>
+                                    <Button x:Name="BtnEditBook" Content="{x:Static properties:Resources.Edit}" 
+                                            Style="{StaticResource PrimaryButtonStyle}"/>
+                                    <Button x:Name="BtnDeleteBook" Content="{x:Static properties:Resources.Delete}" 
+                                            Style="{StaticResource DeleteButtonStyle}"/>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <!-- Onglet Catégories -->
+            <TabItem x:Name="TabCategories"
+                     Header="{x:Static properties:Resources.Categories}" 
+                     Style="{StaticResource ModernTabItemStyle}">
+                <Grid Style="{StaticResource ContentContainerStyle}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Liste des catégories -->
+                    <DataGrid Grid.Row="0" 
+                              Style="{StaticResource ModernDataGridStyle}"
+                              ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                              CellStyle="{StaticResource DataGridCellStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="ColCategoryID" Header="{x:Static properties:Resources.ID}" Binding="{Binding Id}" Width="80"/>
+                            <DataGridTextColumn x:Name="ColCategoryName" Header="{x:Static properties:Resources.CategoryName}" Binding="{Binding Nom}" Width="*"/>
+                            <DataGridTextColumn x:Name="ColCategoryBooksCount" Header="{x:Static properties:Resources.BooksCount}" Binding="{Binding NombreLivres}" Width="250"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Panneau de gestion -->
+                    <GroupBox x:Name="GroupBoxCategories"
+                              Grid.Row="1" 
+                              Header="{x:Static properties:Resources.CategoryManagement}" 
+                              Style="{StaticResource ModernGroupBoxStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Margin="5">
+                                <Label x:Name="LabelCategoryName" Content="{x:Static properties:Resources.CategoryName}" Style="{StaticResource ModernLabelStyle}"/>
+                                <TextBox x:Name="TxtCategoryName" Style="{StaticResource ModernTextBoxStyle}"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="1" 
+                                       VerticalAlignment="Bottom" 
+                                       Orientation="Horizontal"
+                                       Margin="5">
+                                <Button x:Name="BtnAddCategory" Content="{x:Static properties:Resources.Add}" 
+                                        Style="{StaticResource SuccessButtonStyle}"/>
+                                <Button x:Name="BtnEditCategory" Content="{x:Static properties:Resources.Edit}" 
+                                        Style="{StaticResource PrimaryButtonStyle}"/>
+                                <Button x:Name="BtnDeleteCategory" Content="{x:Static properties:Resources.Delete}" 
+                                        Style="{StaticResource DeleteButtonStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <!-- Onglet Statistiques -->
+            <TabItem x:Name="TabStatistics"
+                     Header="{x:Static properties:Resources.Statistics}" 
+                     Style="{StaticResource ModernTabItemStyle}">
+                <Grid Style="{StaticResource ContentContainerStyle}">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Style="{StaticResource StatistiquesStyle}">
+                            <TextBlock x:Name="StatTitle"
+                                      Text="{x:Static properties:Resources.LibraryStatistics}" 
+                                      Style="{StaticResource SectionTitleStyle}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Carte Auteurs -->
+                                <Border Grid.Column="0" Style="{StaticResource StatCardBlueStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="👤" Style="{StaticResource StatIconStyle}"/>
+                                        <TextBlock x:Name="StatAuthorsTitle" Text="{x:Static properties:Resources.AuthorsCount}" Style="{StaticResource StatTitleStyle}"/>
+                                        <TextBlock x:Name="StatAuthorsValue" Text="0" Style="{StaticResource StatValueStyle}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Carte Livres -->
+                                <Border Grid.Column="1" Style="{StaticResource StatCardGreenStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="📚" Style="{StaticResource StatIconStyle}"/>
+                                        <TextBlock x:Name="StatBooksTitle" Text="{x:Static properties:Resources.BooksCount}" Style="{StaticResource StatTitleStyle}"/>
+                                        <TextBlock x:Name="StatBooksValue" Text="0" Style="{StaticResource StatValueStyle}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Carte Catégories -->
+                                <Border Grid.Column="2" Style="{StaticResource StatCardPurpleStyle}">
+                                    <StackPanel>
+                                        <TextBlock Text="🏷️" Style="{StaticResource StatIconStyle}"/>
+                                        <TextBlock x:Name="StatCategoriesTitle" Text="{x:Static properties:Resources.CategoriesCount}" Style="{StaticResource StatTitleStyle}"/>
+                                        <TextBlock x:Name="StatCategoriesValue" Text="0" Style="{StaticResource StatValueStyle}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Informations supplémentaires -->
+                            <Border Style="{StaticResource InfoCardStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Column="0" Grid.Row="0" x:Name="InfoTitle"
+                                              Text="{x:Static properties:Resources.GeneralInformation}" 
+                                              Style="{StaticResource InfoTitleStyle}"/>
+                                    
+                                    <TextBlock Grid.Column="0" Grid.Row="1" x:Name="InfoAuthor"
+                                              Text="{x:Static properties:Resources.AuthorWithMostbooks}" 
+                                              Style="{StaticResource InfoTextStyle}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="1" x:Name="InfoAuthorValue"
+                                              Text="0" 
+                                              Style="{StaticResource InfoValueStyle}"/>
+
+                                    <TextBlock Grid.Column="0" Grid.Row="2" x:Name="InfoCategory"
+                                              Text="{x:Static properties:Resources.MostPopularCategory}" 
+                                              Style="{StaticResource InfoTextStyle}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="2" x:Name="InfoCategoryvalue"
+                                              Text="0" 
+                                              Style="{StaticResource InfoValueStyle}"/>
+                                    
+                                    <TextBlock Grid.Column="0" Grid.Row="3" x:Name="InfoLastBook"
+                                              Text="{x:Static properties:Resources.LastBookAdded}" 
+                                              Style="{StaticResource InfoTextStyle}"/>
+                                    <TextBlock Grid.Column="1" Grid.Row="3" x:Name="InfoLastBookValue"
+                                              Text="0" 
+                                              Style="{StaticResource InfoValueStyle}"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
