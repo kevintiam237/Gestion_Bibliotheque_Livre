@@ -19,7 +19,7 @@ namespace Gestion_Bibliotheque_Livre.Properties {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -214,6 +214,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please enter a name.
+        /// </summary>
+        public static string EnterName {
+            get {
+                return ResourceManager.GetString("EnterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à First Name.
         /// </summary>
         public static string FirstName {
@@ -313,6 +322,78 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error while adding: {0}.
+        /// </summary>
+        public static string Msg_AddError {
+            get {
+                return ResourceManager.GetString("Msg_AddError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Category not found.
+        /// </summary>
+        public static string Msg_CategoryNotFound {
+            get {
+                return ResourceManager.GetString("Msg_CategoryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Delete &apos;{0}&apos;?.
+        /// </summary>
+        public static string Msg_DeleteConfirm {
+            get {
+                return ResourceManager.GetString("Msg_DeleteConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à  Please enter a category name.
+        /// </summary>
+        public static string Msg_EnterCategoryName {
+            get {
+                return ResourceManager.GetString("Msg_EnterCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Invalid selection..
+        /// </summary>
+        public static string Msg_InvalidSelection {
+            get {
+                return ResourceManager.GetString("Msg_InvalidSelection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This category already exists.
+        /// </summary>
+        public static string Msg_NameExists {
+            get {
+                return ResourceManager.GetString("Msg_NameExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Another category already has this name.
+        /// </summary>
+        public static string Msg_OtherNameExists {
+            get {
+                return ResourceManager.GetString("Msg_OtherNameExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please select a category.
+        /// </summary>
+        public static string Msg_SelectCategory {
+            get {
+                return ResourceManager.GetString("Msg_SelectCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Number of authors.
         /// </summary>
         public static string NumberOfAuthors {
@@ -399,6 +480,42 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirmation.
+        /// </summary>
+        public static string Title_Confirm {
+            get {
+                return ResourceManager.GetString("Title_Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Error.
+        /// </summary>
+        public static string Title_Error {
+            get {
+                return ResourceManager.GetString("Title_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Information.
+        /// </summary>
+        public static string Title_Info {
+            get {
+                return ResourceManager.GetString("Title_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Validation.
+        /// </summary>
+        public static string Title_Validation {
+            get {
+                return ResourceManager.GetString("Title_Validation", resourceCulture);
             }
         }
         

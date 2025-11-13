@@ -234,4 +234,43 @@
   <data name="SelectAuthor" xml:space="preserve">
     <value>Select an author...</value>
   </data>
+  <data name="Msg_SelectCategory" xml:space="preserve">
+    <value>Please select a category</value>
+  </data>
+  <data name="Msg_InvalidSelection" xml:space="preserve">
+    <value>Invalid selection.</value>
+  </data>
+  <data name="EnterName" xml:space="preserve">
+    <value>Please enter a name</value>
+  </data>
+  <data name="Msg_EnterCategoryName" xml:space="preserve">
+    <value> Please enter a category name</value>
+  </data>
+  <data name="Msg_NameExists" xml:space="preserve">
+    <value>This category already exists</value>
+  </data>
+  <data name="Msg_OtherNameExists" xml:space="preserve">
+    <value>Another category already has this name</value>
+  </data>
+  <data name="Msg_CategoryNotFound" xml:space="preserve">
+    <value>Category not found</value>
+  </data>
+  <data name="Msg_DeleteConfirm" xml:space="preserve">
+    <value>Delete '{0}'?</value>
+  </data>
+  <data name="Msg_AddError" xml:space="preserve">
+    <value>Error while adding: {0}</value>
+  </data>
+  <data name="Title_Validation" xml:space="preserve">
+    <value>Validation</value>
+  </data>
+  <data name="Title_Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Title_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Title_Confirm" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
 </root>

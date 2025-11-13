@@ -45,25 +45,25 @@ namespace Gestion_Bibliotheque_Livre
         private async void BtnEditCategory_Click(object sender, RoutedEventArgs e)
         {
             var element = DataGridCategories.SelectedItem;
-            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
+                if (element == null) { MessageBox.Show(resourceManager.GetString("Msg_SelectCategory"), resourceManager.GetString("Title_Info"), MessageBoxButton.OK, MessageBoxImage.Information); return; }
 
             var type = element.GetType();
             var idObj = type.GetProperty("Id")?.GetValue(element);
-            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
+            if (idObj is not int id) { MessageBox.Show(resourceManager.GetString("Msg_InvalidSelection"), resourceManager.GetString("Title_Info"), MessageBoxButton.OK, MessageBoxImage.Information); return; }
 
             var nouveauNom = TxtCategoryName.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(nouveauNom)) { MessageBox.Show("Saisissez un nom."); return; }
+            if (string.IsNullOrWhiteSpace(nouveauNom)) { MessageBox.Show(resourceManager.GetString("Msg_EnterName"), resourceManager.GetString("Title_Validation"), MessageBoxButton.OK, MessageBoxImage.Information); return; }
 
             using var contexte = new DbContextBibliotheque();
 
             if (await contexte.Categories.AnyAsync(c => c.Nom == nouveauNom && c.Id != id))
             {
-                MessageBox.Show("Une autre catégorie porte déjà ce nom.");
+                MessageBox.Show(resourceManager.GetString("Msg_OtherNameExists"), resourceManager.GetString("Title_Info"), MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
             var categorie = await contexte.Categories.FindAsync(id);
-            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
+            if (categorie == null) { MessageBox.Show(resourceManager.GetString("Msg_CategoryNotFound"), resourceManager.GetString("Title_Error"), MessageBoxButton.OK, MessageBoxImage.Warning); return; }
 
             categorie.Nom = nouveauNom;
             await contexte.SaveChangesAsync();
@@ -90,7 +90,10 @@ namespace Gestion_Bibliotheque_Livre
             var nom = type.GetProperty("Nom")?.GetValue(element)?.ToString();
             if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
 
-            if (MessageBox.Show($"Supprimer '{nom}' ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            if (MessageBox.Show(
+                    string.Format(resourceManager.GetString("Msg_DeleteConfirm")!, nom),
+                    resourceManager.GetString("Title_Confirm"),
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
             using var contexte = new DbContextBibliotheque();
@@ -110,7 +113,7 @@ namespace Gestion_Bibliotheque_Livre
 
             if (string.IsNullOrWhiteSpace(nom))
             {
-                MessageBox.Show("Veuillez saisir un nom de catégorie.", "Validation", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(resourceManager.GetString("Msg_EnterCategoryName"), resourceManager.GetString("Title_Validation"), MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
@@ -118,10 +121,10 @@ namespace Gestion_Bibliotheque_Livre
             {
                 using var contexte = new DbContextBibliotheque();
 
-                // Refus des doublons (sensibles à la casse, ajustez si besoin)
+                // Refus des doublons (sensibles à la caisse, ajustez si besoin)
                 if (await contexte.Categories.AnyAsync(c => c.Nom == nom))
                 {
-                    MessageBox.Show("Cette catégorie existe déjà.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show(resourceManager.GetString("Msg_NameExists"), resourceManager.GetString("Title_Info"), MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
@@ -133,7 +136,7 @@ namespace Gestion_Bibliotheque_Livre
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erreur lors de l'ajout : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format(resourceManager.GetString("Msg_AddError")!, ex.Message), resourceManager.GetString("Title_Error"), MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void Button_Click(object sender, RoutedEventArgs e)

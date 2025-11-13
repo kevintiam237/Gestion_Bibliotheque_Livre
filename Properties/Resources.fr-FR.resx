@@ -234,4 +234,43 @@
   <data name="SelectAuthor" xml:space="preserve">
     <value>Sélectionner un auteur...</value>
   </data>
+  <data name="Msg_SelectCategory" xml:space="preserve">
+    <value>Sélectionnez une catégorie</value>
+  </data>
+  <data name="Msg_InvalidSelection" xml:space="preserve">
+    <value>Sélection invalide</value>
+  </data>
+  <data name="EnterName" xml:space="preserve">
+    <value>Saisissez un nom</value>
+  </data>
+  <data name="Msg_EnterCategoryName" xml:space="preserve">
+    <value>Veuillez saisir un nom de catégorie</value>
+  </data>
+  <data name="Msg_NameExists" xml:space="preserve">
+    <value>Cette catégorie existe déjà</value>
+  </data>
+  <data name="Msg_OtherNameExists" xml:space="preserve">
+    <value>Une autre catégorie porte déjà ce nom</value>
+  </data>
+  <data name="Msg_CategoryNotFound" xml:space="preserve">
+    <value>Catégorie introuvable</value>
+  </data>
+  <data name="Msg_DeleteConfirm" xml:space="preserve">
+    <value>Supprimer '{0}' ?</value>
+  </data>
+  <data name="Msg_AddError" xml:space="preserve">
+    <value>Erreur lors de l'ajout : {0}</value>
+  </data>
+  <data name="Title_Validation" xml:space="preserve">
+    <value>Validation</value>
+  </data>
+  <data name="Title_Info" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="Title_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Title_Confirm" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
 </root>
