@@ -261,6 +261,8 @@
 
                     <!-- Liste des catégories -->
                     <DataGrid Grid.Row="0" 
+                              x:Name="DataGridCategories"
+                              SelectionChanged="DataGridCategories_SelectionChanged"
                               Style="{StaticResource ModernDataGridStyle}"
                               ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                               CellStyle="{StaticResource DataGridCellStyle}">
@@ -293,13 +295,13 @@
                                        Margin="5">
                                 <Button x:Name="BtnAddCategory" Content="{x:Static properties:Resources.Add}" 
                                         Style="{StaticResource SuccessButtonStyle}"/>
-                                <Button x:Name="BtnEditCategory" Content="{x:Static properties:Resources.Edit}" 
+                                <Button x:Name="BtnEditCategory" Click="BtnEditCategory_Click" Content="{x:Static properties:Resources.Edit}" 
                                         Style="{StaticResource PrimaryButtonStyle}"/>
-                                <Button x:Name="BtnDeleteCategory" Content="{x:Static properties:Resources.Delete}" 
+                                <Button x:Name="BtnDeleteCategory" Click="BtnDeleteCategory_Click" Content="{x:Static properties:Resources.Delete}" 
                                         Style="{StaticResource DeleteButtonStyle}"/>
                             </StackPanel>
                         </Grid>
-                    </GroupBox>
+                    </GroupBox> 
                 </Grid>
             </TabItem>
 
