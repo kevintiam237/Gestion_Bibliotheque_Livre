@@ -23,6 +23,7 @@ namespace BibliothequeApp.Models
         public virtual DetailsLivre DetailsLivre { get; set; } = null!;
         public virtual ICollection<LivreCategorie> LivreCategories { get; set; } = new List<LivreCategorie>();
 
+
         // Propriété calculée pour le format de date personnalisé
         [NotMapped]
         public string DatePublicationFormatee

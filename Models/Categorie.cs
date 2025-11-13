@@ -13,5 +13,6 @@ namespace BibliothequeApp.Models
 
         // Navigation properties
         public virtual ICollection<LivreCategorie> LivreCategories { get; set; } = new List<LivreCategorie>();
+
     }
 }

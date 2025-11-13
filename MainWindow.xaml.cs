@@ -6,9 +6,7 @@ using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Gestion_Bibliotheque_Livre.Models;
-using Microsoft.EntityFrameworkCore;
-using BibliothequeApp.Models;
+
 
 namespace Gestion_Bibliotheque_Livre
 {
@@ -34,113 +32,10 @@ namespace Gestion_Bibliotheque_Livre
         public MainWindow()
         {
             InitializeComponent();
-            resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(MainWindow).Assembly);
-            UpdateUIWithResources();
-            ChargerCategories();
-            BtnAddCategory.Click += BtnAddCategory_Click;
-        }
-        // Méthode pour charger les catégories avec le nombre de livre
-        private void ChargerCategories()
-        {
-            using var contexte = new DbContextBibliotheque();
 
-            var categories = contexte.Categories
-                .Select(c => new
-                {
-                    c.Id,
-                    c.Nom,
-                    NombreLivres = c.LivreCategories.Count
-                })
-                .OrderBy(c => c.Nom)
-                .ToList();
-
-            DataGridCategories.ItemsSource = categories;
-        }
-        // Méthode pour éditer les champs
-        private async void BtnEditCategory_Click(object sender, RoutedEventArgs e)
-        {
-            var element = DataGridCategories.SelectedItem;
-            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
-
-            var type = element.GetType();
-            var idObj = type.GetProperty("Id")?.GetValue(element);
-            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
-
-            var nouveauNom = TxtCategoryName.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(nouveauNom)) { MessageBox.Show("Saisissez un nom."); return; }
-
-            using var contexte = new DbContextBibliotheque();
-
-            if (await contexte.Categories.AnyAsync(c => c.Nom == nouveauNom && c.Id != id))
-            {
-                MessageBox.Show("Une autre catégorie porte déjà ce nom.");
-                return;
-            }
-
-            var categorie = await contexte.Categories.FindAsync(id);
-            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
-
-            categorie.Nom = nouveauNom;
-            await contexte.SaveChangesAsync();
-            ChargerCategories();
-        }
-        // Méthode pour supprimer la catégorie sélectionnée (avec confirmation)
-        private void DataGridCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var element = DataGridCategories.SelectedItem;
-            if (element == null) return;
-
-            // Les éléments sont des types anonymes { Id, Nom, NombreLivres } → on lit via réflexion
-            var nom = element.GetType().GetProperty("Nom")?.GetValue(element)?.ToString();
-            TxtCategoryName.Text = nom ?? string.Empty;
-        }
-        // Méthode pour ajouter une nouvelle catégorie
-        private async void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
-        {
-            var element = DataGridCategories.SelectedItem;
-            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
-
-            var type = element.GetType();
-            var idObj = type.GetProperty("Id")?.GetValue(element);
-            var nom = type.GetProperty("Nom")?.GetValue(element)?.ToString();
-            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
-
-            if (MessageBox.Show($"Supprimer '{nom}' ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            using var contexte = new DbContextBibliotheque();
-            var categorie = await contexte.Categories.FindAsync(id);
-            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
-
-            contexte.Categories.Remove(categorie);
-            await contexte.SaveChangesAsync();
-
-            TxtCategoryName.Clear();
-            ChargerCategories();
-        }
-        // Méthode pour ajouter categorie
-        private async void BtnAddCategory_Click(object sender, RoutedEventArgs e)
-        {
-            var nom = TxtCategoryName.Text?.Trim();
-
-            if (string.IsNullOrWhiteSpace(nom))
-            {
-                MessageBox.Show("Veuillez saisir un nom de catégorie.", "Validation", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
             // Initialise le gestionnaire de ressources pour charger les chaînes localisées
             resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(MainWindow).Assembly);
 
-            try
-            {
-                using var contexte = new DbContextBibliotheque();
-
-                // Refus des doublons (sensibles à la casse, ajustez si besoin)
-                if (await contexte.Categories.AnyAsync(c => c.Nom == nom))
-                {
-                    MessageBox.Show("Cette catégorie existe déjà.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
             // Met à jour l'interface avec les textes de la langue par défaut
             UpdateUIWithResources();
 
@@ -163,17 +58,6 @@ namespace Gestion_Bibliotheque_Livre
         /// Gestionnaire du bouton de changement de langue.
         /// Bascule entre fr-FR et en-US, met à jour la culture, et recharge tout l'interface.
         /// </summary>
-                contexte.Categories.Add(new Categorie { Nom = nom });
-                await contexte.SaveChangesAsync();
-
-                TxtCategoryName.Clear();
-                ChargerCategories(); // rafraîchir la grille
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erreur lors de l'ajout : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is string currentCulture)
@@ -233,7 +117,7 @@ namespace Gestion_Bibliotheque_Livre
             // Onglet Auteurs
             GroupBoxAuthors.Header = resourceManager.GetString("AuthorManagement");
             LabelLastName.Content = $"{resourceManager.GetString("LastName")} :";
-            LabelFirstName.Content = $"{resourceManager.GetString("FirstName")} :"; 
+            LabelFirstName.Content = $"{resourceManager.GetString("FirstName")} :";
             BtnAddAuthor.Content = $"➕ {resourceManager.GetString("Add")}";
             BtnEditAuthor.Content = $"✏️ {resourceManager.GetString("Edit")}";
             BtnDeleteAuthor.Content = $"🗑️ {resourceManager.GetString("Delete")}";
@@ -360,10 +244,17 @@ namespace Gestion_Bibliotheque_Livre
             {
                 var categories = ListeDesLivres.Categories
                     .OrderBy(c => c.Nom)
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Nom,
+                        NombreLivres = c.LivreCategories.Count()
+                    })
                     .ToList();
 
                 // Vide le ComboBox
                 ComboBoxCategoriesSelect.Items.Clear();
+                DataGridCategories.ItemsSource = categories;
 
                 // Ajoute l'option par défaut
                 ComboBoxCategoriesSelect.Items.Add(new ComboBoxItem
@@ -801,6 +692,105 @@ namespace Gestion_Bibliotheque_Livre
             {
                 AfficherErreur("ErrorUnexpected", ex.Message);
             }
+        }
+
+        // Méthode pour ajouter une catégorie
+        private void BtnAddCategory_Click(object sender, RoutedEventArgs e)
+        {
+            var nom = TxtCategoryName.Text?.Trim();
+
+            if (string.IsNullOrWhiteSpace(nom))
+            {
+                MessageBox.Show("Veuillez saisir un nom de catégorie.", "Validation", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            try
+            {
+                using var ListeDesLivres = new DbContextBibliotheque();
+
+                // Refus des doublons (sensibles à la casse, ajustez si besoin)
+                if (ListeDesLivres.Categories.Any(c => c.Nom == nom))
+                {
+                    MessageBox.Show("Cette catégorie existe déjà.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                ListeDesLivres.Categories.Add(new Categorie { Nom = nom });
+                ListeDesLivres.SaveChanges();
+
+                TxtCategoryName.Clear();
+                ChargerCategories(); // rafraîchir la grille
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors de l'ajout : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Méthode pour éditer une catégorie
+        private void BtnEditCategory_Click(object sender, RoutedEventArgs e)
+        {
+            var element = DataGridCategories.SelectedItem;
+            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
+
+            var type = element.GetType();
+            var idObj = type.GetProperty("Id")?.GetValue(element);
+            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
+
+            var nouveauNom = TxtCategoryName.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(nouveauNom)) { MessageBox.Show("Saisissez un nom."); return; }
+
+            using var ListeDesLivres = new DbContextBibliotheque();
+
+            if (ListeDesLivres.Categories.Any(c => c.Nom == nouveauNom && c.Id != id))
+            {
+                MessageBox.Show("Une autre catégorie porte déjà ce nom.");
+                return;
+            }
+
+            var categorie = ListeDesLivres.Categories.Find(id);
+            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
+
+            categorie.Nom = nouveauNom;
+            ListeDesLivres.SaveChanges();
+            ChargerCategories();
+        }
+
+        // Méthode pour supprimer une catégorie
+        private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
+        {
+            var element = DataGridCategories.SelectedItem;
+            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
+
+            var type = element.GetType();
+            var idObj = type.GetProperty("Id")?.GetValue(element);
+            var nom = type.GetProperty("Nom")?.GetValue(element)?.ToString();
+            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
+
+            if (MessageBox.Show($"Supprimer '{nom}' ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            using var ListeDesLivres = new DbContextBibliotheque();
+            var categorie = ListeDesLivres.Categories.Find(id);
+            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
+
+            ListeDesLivres.Categories.Remove(categorie);
+            ListeDesLivres.SaveChanges();
+
+            TxtCategoryName.Clear();
+            ChargerCategories();
+        }
+
+        // Gestionnaire de sélection dans le DataGrid des catégories
+        private void DataGridCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var element = DataGridCategories.SelectedItem;
+            if (element == null) return;
+
+            // Les éléments sont des types anonymes { Id, Nom, NombreLivres } → on lit via réflexion
+            var nom = element.GetType().GetProperty("Nom")?.GetValue(element)?.ToString();
+            TxtCategoryName.Text = nom ?? string.Empty;
         }
     }
 }

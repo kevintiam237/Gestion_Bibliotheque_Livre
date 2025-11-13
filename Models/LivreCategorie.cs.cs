@@ -9,4 +9,5 @@
         public virtual Livre Livre { get; set; } = null!;
         public virtual Categorie Categorie { get; set; } = null!;
     }
-}
+        
+}   

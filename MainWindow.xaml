@@ -232,7 +232,7 @@
                             </Grid>
                         </Grid>
                     </GroupBox>
-                    
+
                     <!-- ZONE DE MESSAGE D'ERREUR avec styles depuis -->
                     <Border Grid.Row="2" 
                 Grid.ColumnSpan="4" 
@@ -254,6 +254,10 @@
                      Header="{x:Static properties:Resources.Categories}" 
                      Style="{StaticResource ModernTabItemStyle}">
                 <Grid Style="{StaticResource ContentContainerStyle}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="61*"/>
+                        <ColumnDefinition Width="529*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
@@ -265,7 +269,7 @@
                               SelectionChanged="DataGridCategories_SelectionChanged"
                               Style="{StaticResource ModernDataGridStyle}"
                               ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                              CellStyle="{StaticResource DataGridCellStyle}">
+                              CellStyle="{StaticResource DataGridCellStyle}" Grid.ColumnSpan="2" Margin="10,10,10,10">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="ColCategoryID" Header="{x:Static properties:Resources.ID}" Binding="{Binding Id}" Width="80"/>
                             <DataGridTextColumn x:Name="ColCategoryName" Header="{x:Static properties:Resources.CategoryName}" Binding="{Binding Nom}" Width="*"/>
@@ -277,7 +281,7 @@
                     <GroupBox x:Name="GroupBoxCategories"
                               Grid.Row="1" 
                               Header="{x:Static properties:Resources.CategoryManagement}" 
-                              Style="{StaticResource ModernGroupBoxStyle}">
+                              Style="{StaticResource ModernGroupBoxStyle}" Grid.ColumnSpan="2" Margin="10,10,10,10">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -301,7 +305,7 @@
                                         Style="{StaticResource DeleteButtonStyle}"/>
                             </StackPanel>
                         </Grid>
-                    </GroupBox> 
+                    </GroupBox>
                 </Grid>
             </TabItem>
 
