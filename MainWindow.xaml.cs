@@ -6,9 +6,7 @@ using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Gestion_Bibliotheque_Livre.Models;
-using Microsoft.EntityFrameworkCore;
-using BibliothequeApp.Models;
+using System.Linq;
 
 namespace Gestion_Bibliotheque_Livre
 {
@@ -34,113 +32,10 @@ namespace Gestion_Bibliotheque_Livre
         public MainWindow()
         {
             InitializeComponent();
-            resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(MainWindow).Assembly);
-            UpdateUIWithResources();
-            ChargerCategories();
-            BtnAddCategory.Click += BtnAddCategory_Click;
-        }
-        // Méthode pour charger les catégories avec le nombre de livre
-        private void ChargerCategories()
-        {
-            using var contexte = new DbContextBibliotheque();
 
-            var categories = contexte.Categories
-                .Select(c => new
-                {
-                    c.Id,
-                    c.Nom,
-                    NombreLivres = c.LivreCategories.Count
-                })
-                .OrderBy(c => c.Nom)
-                .ToList();
-
-            DataGridCategories.ItemsSource = categories;
-        }
-        // Méthode pour éditer les champs
-        private async void BtnEditCategory_Click(object sender, RoutedEventArgs e)
-        {
-            var element = DataGridCategories.SelectedItem;
-            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
-
-            var type = element.GetType();
-            var idObj = type.GetProperty("Id")?.GetValue(element);
-            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
-
-            var nouveauNom = TxtCategoryName.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(nouveauNom)) { MessageBox.Show("Saisissez un nom."); return; }
-
-            using var contexte = new DbContextBibliotheque();
-
-            if (await contexte.Categories.AnyAsync(c => c.Nom == nouveauNom && c.Id != id))
-            {
-                MessageBox.Show("Une autre catégorie porte déjà ce nom.");
-                return;
-            }
-
-            var categorie = await contexte.Categories.FindAsync(id);
-            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
-
-            categorie.Nom = nouveauNom;
-            await contexte.SaveChangesAsync();
-            ChargerCategories();
-        }
-        // Méthode pour supprimer la catégorie sélectionnée (avec confirmation)
-        private void DataGridCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var element = DataGridCategories.SelectedItem;
-            if (element == null) return;
-
-            // Les éléments sont des types anonymes { Id, Nom, NombreLivres } → on lit via réflexion
-            var nom = element.GetType().GetProperty("Nom")?.GetValue(element)?.ToString();
-            TxtCategoryName.Text = nom ?? string.Empty;
-        }
-        // Méthode pour ajouter une nouvelle catégorie
-        private async void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
-        {
-            var element = DataGridCategories.SelectedItem;
-            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
-
-            var type = element.GetType();
-            var idObj = type.GetProperty("Id")?.GetValue(element);
-            var nom = type.GetProperty("Nom")?.GetValue(element)?.ToString();
-            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
-
-            if (MessageBox.Show($"Supprimer '{nom}' ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
-                return;
-
-            using var contexte = new DbContextBibliotheque();
-            var categorie = await contexte.Categories.FindAsync(id);
-            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
-
-            contexte.Categories.Remove(categorie);
-            await contexte.SaveChangesAsync();
-
-            TxtCategoryName.Clear();
-            ChargerCategories();
-        }
-        // Méthode pour ajouter categorie
-        private async void BtnAddCategory_Click(object sender, RoutedEventArgs e)
-        {
-            var nom = TxtCategoryName.Text?.Trim();
-
-            if (string.IsNullOrWhiteSpace(nom))
-            {
-                MessageBox.Show("Veuillez saisir un nom de catégorie.", "Validation", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
             // Initialise le gestionnaire de ressources pour charger les chaînes localisées
             resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(MainWindow).Assembly);
 
-            try
-            {
-                using var contexte = new DbContextBibliotheque();
-
-                // Refus des doublons (sensibles à la casse, ajustez si besoin)
-                if (await contexte.Categories.AnyAsync(c => c.Nom == nom))
-                {
-                    MessageBox.Show("Cette catégorie existe déjà.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    return;
-                }
             // Met à jour l'interface avec les textes de la langue par défaut
             UpdateUIWithResources();
 
@@ -157,23 +52,13 @@ namespace Gestion_Bibliotheque_Livre
             ChargerLivre();
             ChargerAuteurs();
             ChargerCategories();
+            ChargerStatistiques();
         }
 
         /// <summary>
         /// Gestionnaire du bouton de changement de langue.
         /// Bascule entre fr-FR et en-US, met à jour la culture, et recharge tout l'interface.
         /// </summary>
-                contexte.Categories.Add(new Categorie { Nom = nom });
-                await contexte.SaveChangesAsync();
-
-                TxtCategoryName.Clear();
-                ChargerCategories(); // rafraîchir la grille
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erreur lors de l'ajout : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is string currentCulture)
@@ -203,11 +88,12 @@ namespace Gestion_Bibliotheque_Livre
                 ChargerLivre();
                 ChargerAuteurs();
                 ChargerCategories();
+                ChargerStatistiques();
             }
         }
 
         /// <summary>
-        /// Met à jour tous les textes de l'interface utilisateur selon la culture actuelle.
+        /// Met à jour tous les textos de l'interface utilisateur selon la culture actuelle.
         /// Utilise les ressources (.resx) pour afficher les chaînes traduites.
         /// </summary>
         public void UpdateUIWithResources()
@@ -233,7 +119,7 @@ namespace Gestion_Bibliotheque_Livre
             // Onglet Auteurs
             GroupBoxAuthors.Header = resourceManager.GetString("AuthorManagement");
             LabelLastName.Content = $"{resourceManager.GetString("LastName")} :";
-            LabelFirstName.Content = $"{resourceManager.GetString("FirstName")} :"; 
+            LabelFirstName.Content = $"{resourceManager.GetString("FirstName")} :";
             BtnAddAuthor.Content = $"➕ {resourceManager.GetString("Add")}";
             BtnEditAuthor.Content = $"✏️ {resourceManager.GetString("Edit")}";
             BtnDeleteAuthor.Content = $"🗑️ {resourceManager.GetString("Delete")}";
@@ -360,10 +246,17 @@ namespace Gestion_Bibliotheque_Livre
             {
                 var categories = ListeDesLivres.Categories
                     .OrderBy(c => c.Nom)
+                    .Select(c => new
+                    {
+                        c.Id,
+                        c.Nom,
+                        NombreLivres = c.LivreCategories.Count()
+                    })
                     .ToList();
 
                 // Vide le ComboBox
                 ComboBoxCategoriesSelect.Items.Clear();
+                DataGridCategories.ItemsSource = categories;
 
                 // Ajoute l'option par défaut
                 ComboBoxCategoriesSelect.Items.Add(new ComboBoxItem
@@ -499,6 +392,9 @@ namespace Gestion_Bibliotheque_Livre
 
                 // Vide le formulaire après ajout
                 ViderFormulaireLivre();
+
+                // Rafraîchir les statistiques
+                ChargerStatistiques();
 
                 // Affiche un message de succès
                 MessageBox.Show(
@@ -686,6 +582,9 @@ namespace Gestion_Bibliotheque_Livre
                 // Recharge la liste des livres et vide le formulaire
                 ChargerLivre();
                 ViderFormulaireLivre();
+
+                // Rafraîchir les statistiques
+                ChargerStatistiques();
             }
             catch (Exception ex)
             {
@@ -796,9 +695,228 @@ namespace Gestion_Bibliotheque_Livre
 
                 // Rafraîchir l’affichage
                 ChargerLivre();
+                ChargerStatistiques();
             }
             catch (Exception ex)
             {
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
+        }
+
+        // Méthode pour ajouter une catégorie
+        private void BtnAddCategory_Click(object sender, RoutedEventArgs e)
+        {
+            MasquerErreur();
+            var nom = TxtCategoryName.Text?.Trim();
+
+            if (string.IsNullOrWhiteSpace(nom))
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
+
+            try
+            {
+                using var ListeDesLivres = new DbContextBibliotheque();
+
+                if (ListeDesLivres.Categories.Any(c => c.Nom == nom))
+                {
+                    AfficherErreur("ErrorCategoryExists");
+                    return;
+                }
+
+                ListeDesLivres.Categories.Add(new Categorie { Nom = nom });
+                ListeDesLivres.SaveChanges();
+
+                TxtCategoryName.Clear();
+                ChargerCategories();
+                ChargerStatistiques();
+            }
+            catch (Exception ex)
+            {
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
+        }
+
+        // Méthode pour éditer une catégorie
+        private void BtnEditCategory_Click(object sender, RoutedEventArgs e)
+        {
+            MasquerErreur();
+            var element = DataGridCategories.SelectedItem;
+            if (element == null)
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
+
+            var type = element.GetType();
+            var idObj = type.GetProperty("Id")?.GetValue(element);
+            if (idObj is not int id)
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
+
+            var nouveauNom = TxtCategoryName.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(nouveauNom))
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
+
+            try
+            {
+                using var ListeDesLivres = new DbContextBibliotheque();
+
+                if (ListeDesLivres.Categories.Any(c => c.Nom == nouveauNom && c.Id != id))
+                {
+                    AfficherErreur("ErrorCategoryExists");
+                    return;
+                }
+
+                var categorie = ListeDesLivres.Categories.Find(id);
+                if (categorie == null)
+                {
+                    AfficherErreur("ErrorCategoryNotFound");
+                    return;
+                }
+
+                categorie.Nom = nouveauNom;
+                ListeDesLivres.SaveChanges();
+                ChargerCategories();
+                ChargerStatistiques();
+            }
+            catch (Exception ex)
+            {
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
+        }
+
+        // Méthode pour supprimer une catégorie
+        private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
+        {
+            MasquerErreur();
+            var element = DataGridCategories.SelectedItem;
+            if (element == null)
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
+
+            var type = element.GetType();
+            var idObj = type.GetProperty("Id")?.GetValue(element);
+            var nom = type.GetProperty("Nom")?.GetValue(element)?.ToString();
+            if (idObj is not int id)
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
+
+            // Confirmation conservée (non considérée comme erreur)
+            if (MessageBox.Show($"{resourceManager.GetString("ConfirmDeleteCategory") ?? "Supprimer"} '{nom}' ?", resourceManager.GetString("Confirmation") ?? "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                using var ListeDesLivres = new DbContextBibliotheque();
+                var categorie = ListeDesLivres.Categories.Find(id);
+                if (categorie == null)
+                {
+                    AfficherErreur("ErrorCategoryNotFound");
+                    return;
+                }
+
+                ListeDesLivres.Categories.Remove(categorie);
+                ListeDesLivres.SaveChanges();
+
+                TxtCategoryName.Clear();
+                ChargerCategories();
+                ChargerStatistiques();
+            }
+            catch (Exception ex)
+            {
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
+        }
+
+        // Gestionnaire de sélection dans le DataGrid des catégories
+        private void DataGridCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var element = DataGridCategories.SelectedItem;
+            if (element == null) return;
+
+            // Les éléments sont des types anonymes { Id, Nom, NombreLivres } → on lit via réflexion
+            var nom = element.GetType().GetProperty("Nom")?.GetValue(element)?.ToString();
+            TxtCategoryName.Text = nom ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Calcule et affiche les statistiques (comptes + infos “top”) selon la langue courante.
+        /// </summary>
+        private void ChargerStatistiques()
+        {
+            try
+            {
+                using var ctx = new DbContextBibliotheque();
+
+                // Compteurs globaux
+                int nbAuteurs = ctx.Auteurs.Count();
+                int nbLivres = ctx.Livres.Count();
+                int nbCategories = ctx.Categories.Count();
+
+                StatAuthorsValue.Text = nbAuteurs.ToString("N0", CultureInfo.CurrentUICulture);
+                StatBooksValue.Text = nbLivres.ToString("N0", CultureInfo.CurrentUICulture);
+                StatCategoriesValue.Text = nbCategories.ToString("N0", CultureInfo.CurrentUICulture);
+
+                // Auteur avec le plus de livres
+                var auteurTop = ctx.Auteurs
+                    .Select(a => new { a.Nom, a.Prenom, Count = a.Livres.Count })
+                    .OrderByDescending(a => a.Count)
+                    .ThenBy(a => a.Nom)
+                    .FirstOrDefault();
+
+                InfoAuthorValue.Text =
+                    auteurTop != null && auteurTop.Count > 0
+                        ? $"{auteurTop.Nom} {auteurTop.Prenom} ({auteurTop.Count})"
+                        : (resourceManager.GetString("NoData") ?? "-");
+
+                // Catégorie la plus populaire
+                var categorieTop = ctx.Categories
+                    .Select(c => new { c.Nom, Count = c.LivreCategories.Count })
+                    .OrderByDescending(c => c.Count)
+                    .ThenBy(c => c.Nom)
+                    .FirstOrDefault();
+
+                InfoCategoryvalue.Text =
+                    categorieTop != null && categorieTop.Count > 0
+                        ? $"{categorieTop.Nom} ({categorieTop.Count})"
+                        : (resourceManager.GetString("NoData") ?? "-");
+
+                // Dernier livre ajouté (par Id décroissant)
+                var dernierLivre = ctx.Livres
+                    .OrderByDescending(l => l.Id)
+                    .FirstOrDefault();
+
+                if (dernierLivre != null)
+                {
+                    // Utiliser la propriété formatée dépendante de la culture
+                    var temp = new Livre
+                    {
+                        Id = dernierLivre.Id,
+                        Titre = dernierLivre.Titre,
+                        DatePublication = dernierLivre.DatePublication
+                    };
+                    string dateStr = temp.DatePublicationFormatee;
+                    InfoLastBookValue.Text = $"{dernierLivre.Titre} — {dateStr}";
+                }
+                else
+                {
+                    InfoLastBookValue.Text = resourceManager.GetString("NoData") ?? "-";
+                }
+            }
+            catch (Exception ex)
+            {
+                // En cas d'erreur inattendue sur les stats, on affiche dans la barre d'erreur
                 AfficherErreur("ErrorUnexpected", ex.Message);
             }
         }
