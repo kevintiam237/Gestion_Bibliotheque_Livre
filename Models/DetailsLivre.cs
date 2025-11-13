@@ -13,6 +13,9 @@ namespace BibliothequeApp.Models
         [Range(1, int.MaxValue)]
         public int NombrePages { get; set; }
 
+        [Range(0, int.MaxValue)]
+        public int NombreExemplaires { get; set; } = 1;
+
         // Foreign key
         public int LivreId { get; set; }
 

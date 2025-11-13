@@ -135,9 +135,6 @@
   <data name="Books" xml:space="preserve">
     <value>Books</value>
   </data>
-  <data name="BooksCount" xml:space="preserve">
-    <value>Books Count</value>
-  </data>
   <data name="Categories" xml:space="preserve">
     <value>Categories</value>
   </data>
@@ -211,7 +208,7 @@
     <value>Pages Count</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>En English</value>
+    <value>EN English</value>
   </data>
   <data name="Author" xml:space="preserve">
     <value>Authors</value>
@@ -233,5 +230,53 @@
   </data>
   <data name="SelectAuthor" xml:space="preserve">
     <value>Select an author...</value>
+  </data>
+  <data name="Copies" xml:space="preserve">
+    <value>Copies</value>
+  </data>
+  <data name="BooksCount" xml:space="preserve">
+    <value>Books Count</value>
+  </data>
+  <data name="NumberOfCopies" xml:space="preserve">
+    <value>Number of Copies</value>
+  </data>
+  <data name="SelectCategory" xml:space="preserve">
+    <value>Select a category...</value>
+  </data>
+  <data name="ErrorBookExists" xml:space="preserve">
+    <value>This book already exists.</value>
+  </data>
+  <data name="SuccessBookAdded" xml:space="preserve">
+    <value>Book added successfully!</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="ErrorUnexpected" xml:space="preserve">
+    <value>An unexpected error occurred</value>
+  </data>
+  <data name="ErrorBookTitle" xml:space="preserve">
+    <value>Book title is required.</value>
+  </data>
+  <data name="ErrorAuthorRequired" xml:space="preserve">
+    <value>Please select an author.</value>
+  </data>
+  <data name="ErrorDateRequired" xml:space="preserve">
+    <value>Publication date is required.</value>
+  </data>
+  <data name="ErrorISBNRequired" xml:space="preserve">
+    <value>ISBN is required.</value>
+  </data>
+  <data name="ErrorPagesInvalid" xml:space="preserve">
+    <value>Number of pages must be a positive number.</value>
+  </data>
+  <data name="ErrorCopiesInvalid" xml:space="preserve">
+    <value>Number of copies must be zero or a positive number.</value>
+  </data>
+  <data name="ErrorCategoryRequired" xml:space="preserve">
+    <value>Please select a category.</value>
+  </data>
+  <data name="SelectCategory" xml:space="preserve">
+    <value>Select a category...</value>
   </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliothequeApp.Models
 {
@@ -15,6 +16,10 @@ namespace BibliothequeApp.Models
         [Required]
         [StringLength(100)]
         public string Prenom { get; set; } = null!;
+
+        // Propriété calculée pour afficher le nom complet
+        [NotMapped]
+        public string NomComplet => $"{Nom} {Prenom}";
 
         // Navigation properties
         public virtual ICollection<Livre> Livres { get; set; } = new List<Livre>();

@@ -187,6 +187,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Copies.
+        /// </summary>
+        public static string Copies {
+            get {
+                return ResourceManager.GetString("Copies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Publication Date.
         /// </summary>
         public static string Date {
@@ -210,6 +219,87 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please select an author..
+        /// </summary>
+        public static string ErrorAuthorRequired {
+            get {
+                return ResourceManager.GetString("ErrorAuthorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This book already exists..
+        /// </summary>
+        public static string ErrorBookExists {
+            get {
+                return ResourceManager.GetString("ErrorBookExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Book title is required..
+        /// </summary>
+        public static string ErrorBookTitle {
+            get {
+                return ResourceManager.GetString("ErrorBookTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please select a category..
+        /// </summary>
+        public static string ErrorCategoryRequired {
+            get {
+                return ResourceManager.GetString("ErrorCategoryRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Number of copies must be zero or a positive number..
+        /// </summary>
+        public static string ErrorCopiesInvalid {
+            get {
+                return ResourceManager.GetString("ErrorCopiesInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Publication date is required..
+        /// </summary>
+        public static string ErrorDateRequired {
+            get {
+                return ResourceManager.GetString("ErrorDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à ISBN is required..
+        /// </summary>
+        public static string ErrorISBNRequired {
+            get {
+                return ResourceManager.GetString("ErrorISBNRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Number of pages must be a positive number..
+        /// </summary>
+        public static string ErrorPagesInvalid {
+            get {
+                return ResourceManager.GetString("ErrorPagesInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à An unexpected error occurred.
+        /// </summary>
+        public static string ErrorUnexpected {
+            get {
+                return ResourceManager.GetString("ErrorUnexpected", resourceCulture);
             }
         }
         
@@ -250,7 +340,7 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à En English.
+        ///   Recherche une chaîne localisée semblable à EN English.
         /// </summary>
         public static string Language {
             get {
@@ -340,6 +430,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Number of Copies.
+        /// </summary>
+        public static string NumberOfCopies {
+            get {
+                return ResourceManager.GetString("NumberOfCopies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Number of pages.
         /// </summary>
         public static string NumberOfPages {
@@ -385,11 +484,38 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Select a category....
+        /// </summary>
+        public static string SelectCategory {
+            get {
+                return ResourceManager.GetString("SelectCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Statistics.
         /// </summary>
         public static string Statistics {
             get {
                 return ResourceManager.GetString("Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Success.
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Book added successfully!.
+        /// </summary>
+        public static string SuccessBookAdded {
+            get {
+                return ResourceManager.GetString("SuccessBookAdded", resourceCulture);
             }
         }
         

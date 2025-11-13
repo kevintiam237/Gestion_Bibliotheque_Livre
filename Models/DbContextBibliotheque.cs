@@ -43,7 +43,7 @@ namespace Gestion_Bibliotheque_Livre.Models
 
             // One-to-One: Livre -> DetailsLivre
             modelBuilder.Entity<Livre>()
-                .HasOne(l => l.Details)
+                .HasOne(l => l.DetailsLivre)
                 .WithOne(d => d.Livre)
                 .HasForeignKey<DetailsLivre>(d => d.LivreId)
                 .OnDelete(DeleteBehavior.Cascade);

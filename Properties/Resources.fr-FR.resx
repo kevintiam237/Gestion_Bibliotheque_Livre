@@ -135,9 +135,6 @@
   <data name="Books" xml:space="preserve">
     <value>Livres</value>
   </data>
-  <data name="BooksCount" xml:space="preserve">
-    <value>Nombre de livres</value>
-  </data>
   <data name="Categories" xml:space="preserve">
     <value>Catégories</value>
   </data>
@@ -233,5 +230,44 @@
   </data>
   <data name="SelectAuthor" xml:space="preserve">
     <value>Sélectionner un auteur...</value>
+  </data>
+  <data name="Copies" xml:space="preserve">
+    <value>Exemplaires</value>
+  </data>
+  <data name="BooksCount" xml:space="preserve">
+    <value>Nombre de livres</value>
+  </data>
+  <data name="NumberOfCopies" xml:space="preserve">
+    <value>Nombre d'exemplaires</value>
+  </data>
+  <data name="SelectCategory" xml:space="preserve">
+    <value>Sélectionner une catégorie...</value>
+  </data>
+  <data name="ErrorBookExists" xml:space="preserve">
+    <value>Ce livre existe déjà.</value>
+  </data>
+  <data name="ErrorUnexpected" xml:space="preserve">
+    <value>Une erreur inattendue s'est produite</value>
+  </data>
+  <data name="ErrorBookTitle" xml:space="preserve">
+    <value>Le titre du livre est obligatoire.</value>
+  </data>
+  <data name="ErrorAuthorRequired" xml:space="preserve">
+    <value>Veuillez sélectionner un auteur</value>
+  </data>
+  <data name="ErrorDateRequired" xml:space="preserve">
+    <value>La date de publication est obligatoire.</value>
+  </data>
+  <data name="ErrorISBNRequired" xml:space="preserve">
+    <value>L'ISBN est obligatoire.</value>
+  </data>
+  <data name="ErrorPagesInvalid" xml:space="preserve">
+    <value>Le nombre de pages doit être un nombre positif.</value>
+  </data>
+  <data name="ErrorCopiesInvalid" xml:space="preserve">
+    <value>Le nombre d'exemplaires doit être zéro ou un nombre positif.</value>
+  </data>
+  <data name="ErrorCategoryRequired" xml:space="preserve">
+    <value>Veuillez sélectionner une catégorie.</value>
   </data>
 </root>
