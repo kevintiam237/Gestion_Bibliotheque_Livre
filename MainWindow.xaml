@@ -1,19 +1,21 @@
 ﻿<Window x:Class="Gestion_Bibliotheque_Livre.MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:Gestion_Bibliotheque_Livre"
-    xmlns:properties="clr-namespace:Gestion_Bibliotheque_Livre.Properties"
-    mc:Ignorable="d"
-    Title="{x:Static properties:Resources.TitleApp}" 
-    Height="700" 
-    Width="1200"
-    WindowStartupLocation="CenterScreen"
-    Background="{StaticResource BackgroundBrush}">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Gestion_Bibliotheque_Livre"
+        xmlns:properties="clr-namespace:Gestion_Bibliotheque_Livre.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static properties:Resources.TitleApp}" 
+        Height="700" 
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BackgroundBrush}">
 
     <Grid>
+        <!-- Lignes: En-tête / Barre d'erreur / Contenu -->
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -32,24 +34,38 @@
                                Style="{StaticResource TitleTextBlockStyle}"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" 
-                           Orientation="Horizontal" 
-                           VerticalAlignment="Center">
-                    <Button Content="{x:Static properties:Resources.Language}"
-                            x:Name="LangToggleButton"
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button x:Name="LangToggleButton"
+                            Content="{x:Static properties:Resources.Language}"
                             Style="{StaticResource SecondaryButtonStyle}"
-                            Tag="en-US" Click="Button_Click"/>
+                            Tag="en-US"
+                            Click="Button_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
 
+        <!-- Barre d'erreur globale (unique) -->
+        <Border Grid.Row="1"
+                x:Name="ErrorMessageBorder"
+                Style="{StaticResource ErrorMessageBorderStyle}"
+                Visibility="Collapsed"
+                Margin="10,4,10,0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="⚠️" Style="{StaticResource ErrorIconTextStyle}"/>
+                <TextBlock x:Name="TxtErrorMessage"
+                           Text=""
+                           Style="{StaticResource ErrorMessageTextStyle}"/>
+            </StackPanel>
+        </Border>
+
         <!-- Contenu principal avec TabControl -->
-        <TabControl Grid.Row="1" 
-                    Style="{StaticResource ModernTabControlStyle}">
+        <TabControl Grid.Row="2" Style="{StaticResource ModernTabControlStyle}">
 
             <!-- Onglet Auteurs -->
             <TabItem x:Name="TabAuthors" 
-                Header="{x:Static properties:Resources.Authors}" 
+                     Header="{x:Static properties:Resources.Authors}" 
                      Style="{StaticResource ModernTabItemStyle}">
                 <Grid Style="{StaticResource ContentContainerStyle}">
                     <Grid.ColumnDefinitions>
@@ -66,7 +82,9 @@
                     <DataGrid Grid.Row="0" 
                               Style="{StaticResource ModernDataGridStyle}"
                               ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                              CellStyle="{StaticResource DataGridCellStyle}" Grid.ColumnSpan="3" Margin="10,10,10,10">
+                              CellStyle="{StaticResource DataGridCellStyle}"
+                              Grid.ColumnSpan="3"
+                              Margin="10">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="ColAuthorID" Header="{x:Static properties:Resources.ID}" Binding="{Binding Id}" Width="60"/>
                             <DataGridTextColumn x:Name="ColAuthorLastName" Header="{x:Static properties:Resources.LastName}" Binding="{Binding Nom}" Width="*"/>
@@ -79,7 +97,9 @@
                     <GroupBox x:Name="GroupBoxAuthors"
                               Grid.Row="1" 
                               Header="{x:Static properties:Resources.AuthorManagement}" 
-                              Style="{StaticResource ModernGroupBoxStyle}" Grid.ColumnSpan="3" Margin="10,10,10,10">
+                              Style="{StaticResource ModernGroupBoxStyle}"
+                              Grid.ColumnSpan="3"
+                              Margin="10">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -97,16 +117,10 @@
                                 <TextBox x:Name="TxtAuthorFirstName" Style="{StaticResource ModernTextBoxStyle}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="2" 
-                                       VerticalAlignment="Bottom" 
-                                       Orientation="Horizontal"
-                                       Margin="5">
-                                <Button x:Name="BtnAddAuthor" Content="{x:Static properties:Resources.Add}" 
-                                        Style="{StaticResource SuccessButtonStyle}"/>
-                                <Button x:Name="BtnEditAuthor" Content="{x:Static properties:Resources.Edit}" 
-                                        Style="{StaticResource PrimaryButtonStyle}"/>
-                                <Button x:Name="BtnDeleteAuthor" Content="{x:Static properties:Resources.Delete}" 
-                                        Style="{StaticResource DeleteButtonStyle}"/>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="5">
+                                <Button x:Name="BtnAddAuthor" Content="{x:Static properties:Resources.Add}" Style="{StaticResource SuccessButtonStyle}"/>
+                                <Button x:Name="BtnEditAuthor" Content="{x:Static properties:Resources.Edit}" Style="{StaticResource PrimaryButtonStyle}"/>
+                                <Button x:Name="BtnDeleteAuthor" Content="{x:Static properties:Resources.Delete}" Style="{StaticResource DeleteButtonStyle}"/>
                             </StackPanel>
                         </Grid>
                     </GroupBox>
@@ -124,9 +138,9 @@
                         <ColumnDefinition Width="154*"/>
                         <ColumnDefinition Width="964*"/>
                     </Grid.ColumnDefinitions>
+                    <!-- 2 lignes suffisent (liste + panneau de gestion) -->
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
@@ -136,8 +150,9 @@
                               Style="{StaticResource ModernDataGridStyle}"
                               SelectionChanged="dgvBooks_SelectionChanged"
                               ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                              CellStyle="{StaticResource DataGridCellStyle}" Grid.ColumnSpan="4" Margin="10,10,10,10">
-
+                              CellStyle="{StaticResource DataGridCellStyle}"
+                              Grid.ColumnSpan="4"
+                              Margin="10">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="ColBookID" Header="{x:Static properties:Resources.ID}" Binding="{Binding Id}" Width="60"/>
                             <DataGridTextColumn x:Name="ColBookTitle" Header="{x:Static properties:Resources.BookTitle}" Binding="{Binding Titre}" Width="*"/>
@@ -153,7 +168,9 @@
                     <GroupBox x:Name="GroupBoxBooks"
                               Grid.Row="1" 
                               Header="{x:Static properties:Resources.BookManagement}" 
-                              Style="{StaticResource ModernGroupBoxStyle}" Grid.ColumnSpan="4" Margin="10,10,10,10">
+                              Style="{StaticResource ModernGroupBoxStyle}"
+                              Grid.ColumnSpan="4"
+                              Margin="10">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -218,34 +235,14 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                <StackPanel Grid.Column="4" 
-                                           VerticalAlignment="Bottom" 
-                                           Orientation="Horizontal"
-                                           Margin="5">
-                                    <Button x:Name="BtnAddBook" Content="{x:Static properties:Resources.Add}" 
-                                            Style="{StaticResource SuccessButtonStyle}" Click="BtnAddBook_Click"/>
-                                    <Button x:Name="BtnEditBook" Content="{x:Static properties:Resources.Edit}" 
-                                            Style="{StaticResource PrimaryButtonStyle}" Click="BtnEditBook_Click"/>
-                                    <Button x:Name="BtnDeleteBook" Content="{x:Static properties:Resources.Delete}" 
-                                            Style="{StaticResource DeleteButtonStyle}" Click="BtnDeleteBook_Click"/>
+                                <StackPanel Grid.Column="4" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="5">
+                                    <Button x:Name="BtnAddBook" Content="{x:Static properties:Resources.Add}" Style="{StaticResource SuccessButtonStyle}" Click="BtnAddBook_Click"/>
+                                    <Button x:Name="BtnEditBook" Content="{x:Static properties:Resources.Edit}" Style="{StaticResource PrimaryButtonStyle}" Click="BtnEditBook_Click"/>
+                                    <Button x:Name="BtnDeleteBook" Content="{x:Static properties:Resources.Delete}" Style="{StaticResource DeleteButtonStyle}" Click="BtnDeleteBook_Click"/>
                                 </StackPanel>
                             </Grid>
                         </Grid>
                     </GroupBox>
-
-                    <!-- ZONE DE MESSAGE D'ERREUR avec styles depuis -->
-                    <Border Grid.Row="2" 
-                Grid.ColumnSpan="4" 
-                Style="{StaticResource ErrorMessageBorderStyle}"
-                Visibility="Collapsed"
-                x:Name="ErrorMessageBorder">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="⚠️" Style="{StaticResource ErrorIconTextStyle}"/>
-                            <TextBlock x:Name="TxtErrorMessage"
-                          Text=""
-                          Style="{StaticResource ErrorMessageTextStyle}"/>
-                        </StackPanel>
-                    </Border>
                 </Grid>
             </TabItem>
 
@@ -269,7 +266,9 @@
                               SelectionChanged="DataGridCategories_SelectionChanged"
                               Style="{StaticResource ModernDataGridStyle}"
                               ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
-                              CellStyle="{StaticResource DataGridCellStyle}" Grid.ColumnSpan="2" Margin="10,10,10,10">
+                              CellStyle="{StaticResource DataGridCellStyle}"
+                              Grid.ColumnSpan="2"
+                              Margin="10">
                         <DataGrid.Columns>
                             <DataGridTextColumn x:Name="ColCategoryID" Header="{x:Static properties:Resources.ID}" Binding="{Binding Id}" Width="80"/>
                             <DataGridTextColumn x:Name="ColCategoryName" Header="{x:Static properties:Resources.CategoryName}" Binding="{Binding Nom}" Width="*"/>
@@ -281,7 +280,9 @@
                     <GroupBox x:Name="GroupBoxCategories"
                               Grid.Row="1" 
                               Header="{x:Static properties:Resources.CategoryManagement}" 
-                              Style="{StaticResource ModernGroupBoxStyle}" Grid.ColumnSpan="2" Margin="10,10,10,10">
+                              Style="{StaticResource ModernGroupBoxStyle}"
+                              Grid.ColumnSpan="2"
+                              Margin="10">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -293,23 +294,17 @@
                                 <TextBox x:Name="TxtCategoryName" Style="{StaticResource ModernTextBoxStyle}"/>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="1" 
-                                       VerticalAlignment="Bottom" 
-                                       Orientation="Horizontal"
-                                       Margin="5">
-                                <Button x:Name="BtnAddCategory" Content="{x:Static properties:Resources.Add}" 
-                                        Style="{StaticResource SuccessButtonStyle}"/>
-                                <Button x:Name="BtnEditCategory" Click="BtnEditCategory_Click" Content="{x:Static properties:Resources.Edit}" 
-                                        Style="{StaticResource PrimaryButtonStyle}"/>
-                                <Button x:Name="BtnDeleteCategory" Click="BtnDeleteCategory_Click" Content="{x:Static properties:Resources.Delete}" 
-                                        Style="{StaticResource DeleteButtonStyle}"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="5">
+                                <Button x:Name="BtnAddCategory" Content="{x:Static properties:Resources.Add}" Style="{StaticResource SuccessButtonStyle}" Click="BtnAddCategory_Click"/>
+                                <Button x:Name="BtnEditCategory" Content="{x:Static properties:Resources.Edit}" Style="{StaticResource PrimaryButtonStyle}" Click="BtnEditCategory_Click"/>
+                                <Button x:Name="BtnDeleteCategory" Content="{x:Static properties:Resources.Delete}" Style="{StaticResource DeleteButtonStyle}" Click="BtnDeleteCategory_Click"/>
                             </StackPanel>
                         </Grid>
                     </GroupBox>
                 </Grid>
             </TabItem>
 
-            <!-- Onglet Statistiques -->
+            <!-- Onglet Statistiques (rétabli avec tous les x:Name utilisés par le code-behind) -->
             <TabItem x:Name="TabStatistics"
                      Header="{x:Static properties:Resources.Statistics}" 
                      Style="{StaticResource ModernTabItemStyle}">
@@ -317,8 +312,8 @@
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <StackPanel Style="{StaticResource StatistiquesStyle}">
                             <TextBlock x:Name="StatTitle"
-                                      Text="{x:Static properties:Resources.LibraryStatistics}" 
-                                      Style="{StaticResource SectionTitleStyle}"/>
+                                       Text="{x:Static properties:Resources.LibraryStatistics}" 
+                                       Style="{StaticResource SectionTitleStyle}"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -369,35 +364,36 @@
                                     </Grid.RowDefinitions>
 
                                     <TextBlock Grid.Column="0" Grid.Row="0" x:Name="InfoTitle"
-                                              Text="{x:Static properties:Resources.GeneralInformation}" 
-                                              Style="{StaticResource InfoTitleStyle}"/>
+                                               Text="{x:Static properties:Resources.GeneralInformation}" 
+                                               Style="{StaticResource InfoTitleStyle}"/>
 
                                     <TextBlock Grid.Column="0" Grid.Row="1" x:Name="InfoAuthor"
-                                              Text="{x:Static properties:Resources.AuthorWithMostbooks}" 
-                                              Style="{StaticResource InfoTextStyle}"/>
+                                               Text="{x:Static properties:Resources.AuthorWithMostbooks}" 
+                                               Style="{StaticResource InfoTextStyle}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="1" x:Name="InfoAuthorValue"
-                                              Text="0" 
-                                              Style="{StaticResource InfoValueStyle}"/>
+                                               Text="0" 
+                                               Style="{StaticResource InfoValueStyle}"/>
 
                                     <TextBlock Grid.Column="0" Grid.Row="2" x:Name="InfoCategory"
-                                              Text="{x:Static properties:Resources.MostPopularCategory}" 
-                                              Style="{StaticResource InfoTextStyle}"/>
+                                               Text="{x:Static properties:Resources.MostPopularCategory}" 
+                                               Style="{StaticResource InfoTextStyle}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="2" x:Name="InfoCategoryvalue"
-                                              Text="0" 
-                                              Style="{StaticResource InfoValueStyle}"/>
+                                               Text="0" 
+                                               Style="{StaticResource InfoValueStyle}"/>
 
                                     <TextBlock Grid.Column="0" Grid.Row="3" x:Name="InfoLastBook"
-                                              Text="{x:Static properties:Resources.LastBookAdded}" 
-                                              Style="{StaticResource InfoTextStyle}"/>
+                                               Text="{x:Static properties:Resources.LastBookAdded}" 
+                                               Style="{StaticResource InfoTextStyle}"/>
                                     <TextBlock Grid.Column="1" Grid.Row="3" x:Name="InfoLastBookValue"
-                                              Text="0" 
-                                              Style="{StaticResource InfoValueStyle}"/>
+                                               Text="0" 
+                                               Style="{StaticResource InfoValueStyle}"/>
                                 </Grid>
                             </Border>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
             </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

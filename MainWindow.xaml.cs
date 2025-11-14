@@ -6,7 +6,7 @@ using System.Resources;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Linq;
 
 namespace Gestion_Bibliotheque_Livre
 {
@@ -52,6 +52,7 @@ namespace Gestion_Bibliotheque_Livre
             ChargerLivre();
             ChargerAuteurs();
             ChargerCategories();
+            ChargerStatistiques();
         }
 
         /// <summary>
@@ -87,11 +88,12 @@ namespace Gestion_Bibliotheque_Livre
                 ChargerLivre();
                 ChargerAuteurs();
                 ChargerCategories();
+                ChargerStatistiques();
             }
         }
 
         /// <summary>
-        /// Met à jour tous les textes de l'interface utilisateur selon la culture actuelle.
+        /// Met à jour tous les textos de l'interface utilisateur selon la culture actuelle.
         /// Utilise les ressources (.resx) pour afficher les chaînes traduites.
         /// </summary>
         public void UpdateUIWithResources()
@@ -391,6 +393,9 @@ namespace Gestion_Bibliotheque_Livre
                 // Vide le formulaire après ajout
                 ViderFormulaireLivre();
 
+                // Rafraîchir les statistiques
+                ChargerStatistiques();
+
                 // Affiche un message de succès
                 MessageBox.Show(
                     resourceManager.GetString("SuccessBookAdded") ?? "Le livre a été ajouté avec succès !",
@@ -577,6 +582,9 @@ namespace Gestion_Bibliotheque_Livre
                 // Recharge la liste des livres et vide le formulaire
                 ChargerLivre();
                 ViderFormulaireLivre();
+
+                // Rafraîchir les statistiques
+                ChargerStatistiques();
             }
             catch (Exception ex)
             {
@@ -687,6 +695,7 @@ namespace Gestion_Bibliotheque_Livre
 
                 // Rafraîchir l’affichage
                 ChargerLivre();
+                ChargerStatistiques();
             }
             catch (Exception ex)
             {
@@ -697,11 +706,12 @@ namespace Gestion_Bibliotheque_Livre
         // Méthode pour ajouter une catégorie
         private void BtnAddCategory_Click(object sender, RoutedEventArgs e)
         {
+            MasquerErreur();
             var nom = TxtCategoryName.Text?.Trim();
 
             if (string.IsNullOrWhiteSpace(nom))
             {
-                MessageBox.Show("Veuillez saisir un nom de catégorie.", "Validation", MessageBoxButton.OK, MessageBoxImage.Information);
+                AfficherErreur("ErrorCategoryRequired");
                 return;
             }
 
@@ -709,10 +719,9 @@ namespace Gestion_Bibliotheque_Livre
             {
                 using var ListeDesLivres = new DbContextBibliotheque();
 
-                // Refus des doublons (sensibles à la casse, ajustez si besoin)
                 if (ListeDesLivres.Categories.Any(c => c.Nom == nom))
                 {
-                    MessageBox.Show("Cette catégorie existe déjà.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    AfficherErreur("ErrorCategoryExists");
                     return;
                 }
 
@@ -720,66 +729,114 @@ namespace Gestion_Bibliotheque_Livre
                 ListeDesLivres.SaveChanges();
 
                 TxtCategoryName.Clear();
-                ChargerCategories(); // rafraîchir la grille
+                ChargerCategories();
+                ChargerStatistiques();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erreur lors de l'ajout : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                AfficherErreur("ErrorUnexpected", ex.Message);
             }
         }
 
         // Méthode pour éditer une catégorie
         private void BtnEditCategory_Click(object sender, RoutedEventArgs e)
         {
+            MasquerErreur();
             var element = DataGridCategories.SelectedItem;
-            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
-
-            var type = element.GetType();
-            var idObj = type.GetProperty("Id")?.GetValue(element);
-            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
-
-            var nouveauNom = TxtCategoryName.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(nouveauNom)) { MessageBox.Show("Saisissez un nom."); return; }
-
-            using var ListeDesLivres = new DbContextBibliotheque();
-
-            if (ListeDesLivres.Categories.Any(c => c.Nom == nouveauNom && c.Id != id))
+            if (element == null)
             {
-                MessageBox.Show("Une autre catégorie porte déjà ce nom.");
+                AfficherErreur("ErrorCategoryRequired");
                 return;
             }
 
-            var categorie = ListeDesLivres.Categories.Find(id);
-            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
+            var type = element.GetType();
+            var idObj = type.GetProperty("Id")?.GetValue(element);
+            if (idObj is not int id)
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
 
-            categorie.Nom = nouveauNom;
-            ListeDesLivres.SaveChanges();
-            ChargerCategories();
+            var nouveauNom = TxtCategoryName.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(nouveauNom))
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
+
+            try
+            {
+                using var ListeDesLivres = new DbContextBibliotheque();
+
+                if (ListeDesLivres.Categories.Any(c => c.Nom == nouveauNom && c.Id != id))
+                {
+                    AfficherErreur("ErrorCategoryExists");
+                    return;
+                }
+
+                var categorie = ListeDesLivres.Categories.Find(id);
+                if (categorie == null)
+                {
+                    AfficherErreur("ErrorCategoryNotFound");
+                    return;
+                }
+
+                categorie.Nom = nouveauNom;
+                ListeDesLivres.SaveChanges();
+                ChargerCategories();
+                ChargerStatistiques();
+            }
+            catch (Exception ex)
+            {
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
         }
 
         // Méthode pour supprimer une catégorie
         private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
         {
+            MasquerErreur();
             var element = DataGridCategories.SelectedItem;
-            if (element == null) { MessageBox.Show("Sélectionnez une catégorie."); return; }
+            if (element == null)
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
 
             var type = element.GetType();
             var idObj = type.GetProperty("Id")?.GetValue(element);
             var nom = type.GetProperty("Nom")?.GetValue(element)?.ToString();
-            if (idObj is not int id) { MessageBox.Show("Sélection invalide."); return; }
+            if (idObj is not int id)
+            {
+                AfficherErreur("ErrorCategoryRequired");
+                return;
+            }
 
-            if (MessageBox.Show($"Supprimer '{nom}' ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+            // Confirmation conservée (non considérée comme erreur)
+            if (MessageBox.Show($"{resourceManager.GetString("ConfirmDeleteCategory") ?? "Supprimer"} '{nom}' ?", resourceManager.GetString("Confirmation") ?? "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
                 return;
 
-            using var ListeDesLivres = new DbContextBibliotheque();
-            var categorie = ListeDesLivres.Categories.Find(id);
-            if (categorie == null) { MessageBox.Show("Catégorie introuvable."); return; }
+            try
+            {
+                using var ListeDesLivres = new DbContextBibliotheque();
+                var categorie = ListeDesLivres.Categories.Find(id);
+                if (categorie == null)
+                {
+                    AfficherErreur("ErrorCategoryNotFound");
+                    return;
+                }
 
-            ListeDesLivres.Categories.Remove(categorie);
-            ListeDesLivres.SaveChanges();
+                ListeDesLivres.Categories.Remove(categorie);
+                ListeDesLivres.SaveChanges();
 
-            TxtCategoryName.Clear();
-            ChargerCategories();
+                TxtCategoryName.Clear();
+                ChargerCategories();
+                ChargerStatistiques();
+            }
+            catch (Exception ex)
+            {
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
         }
 
         // Gestionnaire de sélection dans le DataGrid des catégories
@@ -791,6 +848,77 @@ namespace Gestion_Bibliotheque_Livre
             // Les éléments sont des types anonymes { Id, Nom, NombreLivres } → on lit via réflexion
             var nom = element.GetType().GetProperty("Nom")?.GetValue(element)?.ToString();
             TxtCategoryName.Text = nom ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Calcule et affiche les statistiques (comptes + infos “top”) selon la langue courante.
+        /// </summary>
+        private void ChargerStatistiques()
+        {
+            try
+            {
+                using var ctx = new DbContextBibliotheque();
+
+                // Compteurs globaux
+                int nbAuteurs = ctx.Auteurs.Count();
+                int nbLivres = ctx.Livres.Count();
+                int nbCategories = ctx.Categories.Count();
+
+                StatAuthorsValue.Text = nbAuteurs.ToString("N0", CultureInfo.CurrentUICulture);
+                StatBooksValue.Text = nbLivres.ToString("N0", CultureInfo.CurrentUICulture);
+                StatCategoriesValue.Text = nbCategories.ToString("N0", CultureInfo.CurrentUICulture);
+
+                // Auteur avec le plus de livres
+                var auteurTop = ctx.Auteurs
+                    .Select(a => new { a.Nom, a.Prenom, Count = a.Livres.Count })
+                    .OrderByDescending(a => a.Count)
+                    .ThenBy(a => a.Nom)
+                    .FirstOrDefault();
+
+                InfoAuthorValue.Text =
+                    auteurTop != null && auteurTop.Count > 0
+                        ? $"{auteurTop.Nom} {auteurTop.Prenom} ({auteurTop.Count})"
+                        : (resourceManager.GetString("NoData") ?? "-");
+
+                // Catégorie la plus populaire
+                var categorieTop = ctx.Categories
+                    .Select(c => new { c.Nom, Count = c.LivreCategories.Count })
+                    .OrderByDescending(c => c.Count)
+                    .ThenBy(c => c.Nom)
+                    .FirstOrDefault();
+
+                InfoCategoryvalue.Text =
+                    categorieTop != null && categorieTop.Count > 0
+                        ? $"{categorieTop.Nom} ({categorieTop.Count})"
+                        : (resourceManager.GetString("NoData") ?? "-");
+
+                // Dernier livre ajouté (par Id décroissant)
+                var dernierLivre = ctx.Livres
+                    .OrderByDescending(l => l.Id)
+                    .FirstOrDefault();
+
+                if (dernierLivre != null)
+                {
+                    // Utiliser la propriété formatée dépendante de la culture
+                    var temp = new Livre
+                    {
+                        Id = dernierLivre.Id,
+                        Titre = dernierLivre.Titre,
+                        DatePublication = dernierLivre.DatePublication
+                    };
+                    string dateStr = temp.DatePublicationFormatee;
+                    InfoLastBookValue.Text = $"{dernierLivre.Titre} — {dateStr}";
+                }
+                else
+                {
+                    InfoLastBookValue.Text = resourceManager.GetString("NoData") ?? "-";
+                }
+            }
+            catch (Exception ex)
+            {
+                // En cas d'erreur inattendue sur les stats, on affiche dans la barre d'erreur
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
         }
     }
 }
