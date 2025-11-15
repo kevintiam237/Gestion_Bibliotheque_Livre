@@ -1,0 +1,232 @@
+﻿<UserControl x:Class="Gestion_Bibliotheque_Livre.Views.BooksPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:properties="clr-namespace:Gestion_Bibliotheque_Livre.Properties"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800"
+             Background="{StaticResource BackgroundGradient}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Style="{StaticResource ContentHeaderStyle}">
+            <StackPanel Orientation="Horizontal">
+                <Border Style="{StaticResource HeaderBooks}">
+                    <TextBlock Text="📚"
+                               Style="{StaticResource HeaderBooksTextBlock}"/>
+                </Border>
+                <StackPanel Margin="15,0,0,0">
+                    <TextBlock 
+                               x:Name="TxtBooks"
+                               Text="{x:Static properties:Resources.Books}" 
+                               Style="{StaticResource ContentTitleStyle}"/>
+                    <TextBlock 
+                                x:Name="TxtManageBookDetails"
+                                Text="{x:Static properties:Resources.ManageBookDetails}" 
+                               Style="{StaticResource ContentSubtitleStyle}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <!-- DataGrid -->
+        <Border Grid.Row="1" Style="{StaticResource DataGridContainerStyle}">
+            <DataGrid x:Name="dgvBooks"
+                      Style="{StaticResource ModernDataGridStyle}"
+                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                      RowStyle="{StaticResource DataGridRowStyle}"
+                      CellStyle="{StaticResource DataGridCellStyle}"
+                      AutoGenerateColumns="False"
+                      SelectionChanged="dgvBooks_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn 
+                                        x:Name="ColBookID"
+                                        Header="{x:Static properties:Resources.ID}" 
+                                       Binding="{Binding Id}" 
+                                       Width="60"
+                                       ElementStyle="{StaticResource DataGridTextStyle}"/>
+                    <DataGridTextColumn 
+                                       x:Name="ColBookTitle"
+                                       Header="{x:Static properties:Resources.BookTitle}" 
+                                       Binding="{Binding Titre}" 
+                                       Width="*"
+                                       ElementStyle="{StaticResource DataGridTextStyle}"/>
+                    <DataGridTextColumn
+                                       x:Name="ColBookAuthor"
+                                       Header="{x:Static properties:Resources.Authors}" 
+                                       Binding="{Binding Auteur.NomComplet}" 
+                                       Width="150"
+                                       ElementStyle="{StaticResource DataGridTextStyle}"/>
+                    <DataGridTextColumn x:Name="ColBookDate"
+                                       Header="{x:Static properties:Resources.PublicationDate}" 
+                                       Binding="{Binding DatePublicationFormatee}" 
+                                       Width="*"
+                                       ElementStyle="{StaticResource DataGridTextStyle}"/>
+                    <DataGridTextColumn x:Name="ColBookISBN"
+                                       Header="{x:Static properties:Resources.ISBN}" 
+                                       Binding="{Binding DetailsLivre.ISBN}" 
+                                       Width="180"
+                                       ElementStyle="{StaticResource DataGridTextStyle}"/>
+                    <DataGridTextColumn x:Name="ColBookPages"
+                                       Header="{x:Static properties:Resources.Pages}" 
+                                       Binding="{Binding DetailsLivre.NombrePages}" 
+                                       Width="80"
+                                       ElementStyle="{StaticResource DataGridTextStyle}"/>
+                    <DataGridTextColumn x:Name="ColBookCopies"
+                                       Header="{x:Static properties:Resources.Copies}" 
+                                       Binding="{Binding DetailsLivre.NombreExemplaires}" 
+                                       Width="90"
+                                       ElementStyle="{StaticResource DataGridTextStyle}"/>
+                </DataGrid.Columns>
+
+                <!-- Application du style de texte à tous les TextBlocks -->
+                <DataGrid.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource DataGridTextStyle}"/>
+                </DataGrid.Resources>
+            </DataGrid>
+        </Border>
+        <!-- Action Panel -->
+        <Border Grid.Row="2" Style="{StaticResource ActionPanelStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"  Style="{StaticResource StatisticsHeaderStyle}">
+                    <StackPanel>
+                        <TextBlock x:Name="TxtBookDetails"
+                                   Style="{StaticResource TextBlockStyle}"
+                                   Text="{x:Static properties:Resources.BookManagement}" />
+                    </StackPanel>
+                </Border>
+                <!-- First Row -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0"
+                                Style="{StaticResource StackPanelStyle}">
+                        <Label 
+                            x:Name="LabelBookTitle"
+                                Content="{x:Static properties:Resources.BookTitle}" 
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox x:Name="TxtBookTitle" 
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                Style="{StaticResource StackPanelStyle}">
+                        <Label 
+                                x:Name="LabelAuthor"
+                                Content="{x:Static properties:Resources.Authors}" 
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <ComboBox x:Name="ComboBoxAuthorSelect" 
+                                  Style="{StaticResource ModernComboBoxStyle}">
+                            <ComboBoxItem Content="Sélectionner / Select..."/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2"
+                                Style="{StaticResource StackPanelStyle}">
+                        <Label 
+                            x:Name="LabelPublicationDate"
+                                Content="{x:Static properties:Resources.PublicationDate}" 
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <DatePicker x:Name="DatePickerPublication" 
+                                    Style="{StaticResource ModernDatePickerStyle}"
+                                    Text="{x:Static properties:Resources.DatePicker_Placeholder}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Second Row -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" 
+                                Style="{StaticResource StackPanelStyle}">
+                        <Label x:Name="LabelISBN"
+                                Content="{x:Static properties:Resources.ISBN}" 
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox x:Name="TxtISBN" 
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Style="{StaticResource StackPanelStyle}">
+                        <Label 
+                                x:Name="LabelPages"
+                                Content="{x:Static properties:Resources.PagesCount}" 
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox x:Name="TxtPages" 
+                                 Style="{StaticResource ModernTextBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Style="{StaticResource StackPanelStyle}">
+                        <Label x:Name="LabelCopies"
+                                Content="{x:Static properties:Resources.NumberOfCopies}" 
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <TextBox x:Name="TxtCopies" Style="{StaticResource ModernTextBoxStyle}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Style="{StaticResource StackPanelStyle}">
+                        <Label 
+                                x:Name="LabelCategoriesBook"
+                                Content="{x:Static properties:Resources.Categories}" 
+                               Style="{StaticResource ModernLabelStyle}"/>
+                        <ComboBox x:Name="ComboBoxCategoriesSelect" 
+                                  Style="{StaticResource ModernComboBoxStyle}">
+                            <ComboBoxItem Content="Sélectionner / Select..."/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Bottom" 
+                                Style="{StaticResource StackPanelStyle}">
+                        <Button x:Name="BtnAddBook" 
+                                Content="{x:Static properties:Resources.Add}" 
+                                Style="{StaticResource SuccessButtonStyle}"
+                                Click="BtnAddBook_Click"/>
+                        <Button x:Name="BtnEditBook" 
+                                Content="{x:Static properties:Resources.Edit}" 
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Click="BtnEditBook_Click"/>
+                        <Button x:Name="BtnDeleteBook" 
+                                Content="{x:Static properties:Resources.Delete}" 
+                                Style="{StaticResource DangerButtonStyle}"
+                                Click="BtnDeleteBook_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+        <!-- Error Message -->
+        <Border Grid.Row="4"
+                x:Name="ErrorMessageBorder"
+                Style="{StaticResource ErrorMessageBorderStyle}"
+                Visibility="Collapsed">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="⚠️" Style="{StaticResource ErrorIconTextStyle}"/>
+                <TextBlock x:Name="TxtErrorMessage"
+                           Text=""
+                           Style="{StaticResource ErrorMessageTextStyle}"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="Gestion_Bibliotheque_Livre.Views.StatisticsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:properties="clr-namespace:Gestion_Bibliotheque_Livre.Properties"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <!-- Header -->
+            <Border 
+                Style="{StaticResource ContentHeaderStyle}" Height="90">
+                <StackPanel Orientation="Horizontal">
+                    <Border Style="{StaticResource HeaderStatistics}">
+                        <TextBlock Text="📊"
+                                   Style="{StaticResource StatisticsHeaderIconsStyle}"/>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock 
+                            x:Name="StatTitle"
+                                    Text="{x:Static properties:Resources.LibraryStatistics}" 
+                                   Style="{StaticResource ContentTitleStyle}"/>
+                        <TextBlock 
+                                    x:Name="StatSubtitle"
+                                    Text="{x:Static properties:Resources.LibraryStat}" 
+                                   Style="{StaticResource ContentSubtitleStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Stats Cards -->
+            <WrapPanel
+                Style="{StaticResource StatisticsPageBackground}">
+                <Border Style="{StaticResource StatCardStyle}" 
+                        Background="{StaticResource PrimaryGradient}">
+                    <StackPanel>
+                        <TextBlock Text="👥" Style="{StaticResource StatisticsIconsStyle}"/>
+                        <TextBlock 
+                            x:Name="StatAuthorsTitle"
+                                    Text="{x:Static properties:Resources.AuthorsCount}" 
+                                   Style="{StaticResource StatTitleStyle}"/>
+                        <TextBlock x:Name="StatAuthorsValue" Text="0" 
+                                   Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource StatCardStyle}" 
+                        Background="{StaticResource SuccessGradient}">
+                    <StackPanel>
+                        <TextBlock Text="📚" 
+                                   Style="{StaticResource StatisticsIconsStyle}"/>
+                        <TextBlock 
+                                    x:Name="StatBooksTitle"
+                                    Text="{x:Static properties:Resources.BooksCount}" 
+                                   Style="{StaticResource StatTitleStyle}"/>
+                        <TextBlock x:Name="StatBooksValue" Text="0" 
+                                   Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource StatCardStyle}" Background="{StaticResource WarningGradient}">
+                    <StackPanel>
+                        <TextBlock Text="🏷️" 
+                                   Style="{StaticResource StatisticsIconsStyle}"/>
+                        <TextBlock 
+                                    x:Name="StatCategoriesTitle"
+                                    Text="{x:Static properties:Resources.CategoriesCount}" 
+                                   Style="{StaticResource StatTitleStyle}"/>
+                        <TextBlock x:Name="StatCategoriesValue" Text="0" 
+                                   Style="{StaticResource StatValueStyle}"/>
+                    </StackPanel>
+                </Border>
+
+            </WrapPanel>
+            <!-- Detailed Information -->
+            <Border Style="{StaticResource DetailedStatsStyle}">
+                <StackPanel>
+                    <TextBlock 
+                                x:Name="InfoTitle"
+                                Text="{x:Static properties:Resources.GeneralInformation}" 
+                               Style="{StaticResource DetailedStatsTitleStyle}"/>
+
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" 
+                                   x:Name="InfoAuthor"
+                                   Text="{x:Static properties:Resources.AuthorWithMostbooks}" 
+                                   Style="{StaticResource DetailedStatsTextStyle}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" 
+                                   x:Name="InfoAuthorValue" Text="-" 
+                                   Style="{StaticResource DetailedStatsValueStyle}"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" 
+                                   x:Name="InfoCategory"
+                                   Text="{x:Static properties:Resources.MostPopularCategory}" 
+                                   Style="{StaticResource DetailedStatsTextStyle}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" 
+                                   x:Name="InfoCategoryValue" Text="-" 
+                                   Style="{StaticResource DetailedStatsValueStyle}"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" 
+                                   x:Name="InfoLastBook"
+                                   Text="{x:Static properties:Resources.LastBookAdded}" 
+                                   Style="{StaticResource DetailedStatsTextStyle}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" 
+                                   x:Name="InfoLastBookValue" Text="-" 
+                                   Style="{StaticResource DetailedStatsValueStyle}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
