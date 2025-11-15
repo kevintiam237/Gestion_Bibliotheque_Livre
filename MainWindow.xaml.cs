@@ -220,5 +220,76 @@ namespace Gestion_Bibliotheque_Livre
             QuickCategoriesCount.Text = categoriesCount.ToString();
 
         }
+
+        /// <summary>
+        /// Calcule et affiche les statistiques (comptes + infos “top”) selon la langue courante.
+        /// </summary>
+        private void ChargerStatistiques()
+        {
+            try
+            {
+                using var ctx = new DbContextBibliotheque();
+
+                // Compteurs globaux
+                int nbAuteurs = ctx.Auteurs.Count();
+                int nbLivres = ctx.Livres.Count();
+                int nbCategories = ctx.Categories.Count();
+
+                StatAuthorsValue.Text = nbAuteurs.ToString("N0", CultureInfo.CurrentUICulture);
+                StatBooksValue.Text = nbLivres.ToString("N0", CultureInfo.CurrentUICulture);
+                StatCategoriesValue.Text = nbCategories.ToString("N0", CultureInfo.CurrentUICulture);
+
+                // Auteur avec le plus de livres
+                var auteurTop = ctx.Auteurs
+                    .Select(a => new { a.Nom, a.Prenom, Count = a.Livres.Count })
+                    .OrderByDescending(a => a.Count)
+                    .ThenBy(a => a.Nom)
+                    .FirstOrDefault();
+
+                InfoAuthorValue.Text =
+                    auteurTop != null && auteurTop.Count > 0
+                        ? $"{auteurTop.Nom} {auteurTop.Prenom} ({auteurTop.Count})"
+                        : (resourceManager.GetString("NoData") ?? "-");
+
+                // Catégorie la plus populaire
+                var categorieTop = ctx.Categories
+                    .Select(c => new { c.Nom, Count = c.LivreCategories.Count })
+                    .OrderByDescending(c => c.Count)
+                    .ThenBy(c => c.Nom)
+                    .FirstOrDefault();
+
+                InfoCategoryvalue.Text =
+                    categorieTop != null && categorieTop.Count > 0
+                        ? $"{categorieTop.Nom} ({categorieTop.Count})"
+                        : (resourceManager.GetString("NoData") ?? "-");
+
+                // Dernier livre ajouté (par Id décroissant)
+                var dernierLivre = ctx.Livres
+                    .OrderByDescending(l => l.Id)
+                    .FirstOrDefault();
+
+                if (dernierLivre != null)
+                {
+                    // Utiliser la propriété formatée dépendante de la culture
+                    var temp = new Livre
+                    {
+                        Id = dernierLivre.Id,
+                        Titre = dernierLivre.Titre,
+                        DatePublication = dernierLivre.DatePublication
+                    };
+                    string dateStr = temp.DatePublicationFormatee;
+                    InfoLastBookValue.Text = $"{dernierLivre.Titre} — {dateStr}";
+                }
+                else
+                {
+                    InfoLastBookValue.Text = resourceManager.GetString("NoData") ?? "-";
+                }
+            }
+            catch (Exception ex)
+            {
+                // En cas d'erreur inattendue sur les stats, on affiche dans la barre d'erreur
+                AfficherErreur("ErrorUnexpected", ex.Message);
+            }
+        }
     }
 }
