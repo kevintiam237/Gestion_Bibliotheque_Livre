@@ -190,7 +190,7 @@
     <value>Pages</value>
   </data>
   <data name="BookTitle" xml:space="preserve">
-    <value>Titre</value>
+    <value>Titre du Livre</value>
   </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
@@ -208,7 +208,7 @@
     <value>Nombre de pages</value>
   </data>
   <data name="Language" xml:space="preserve">
-    <value>🇫🇷 Francais</value>
+    <value>🇫🇷 Français</value>
   </data>
   <data name="Author" xml:space="preserve">
     <value>Auteur</value>
@@ -246,6 +246,12 @@
   <data name="ErrorBookExists" xml:space="preserve">
     <value>Ce livre existe déjà.</value>
   </data>
+  <data name="SuccessBookAdded" xml:space="preserve">
+    <value>Livre ajouté avec succès</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Succès</value>
+  </data>
   <data name="ErrorUnexpected" xml:space="preserve">
     <value>Une erreur inattendue s'est produite</value>
   </data>
@@ -269,5 +275,83 @@
   </data>
   <data name="ErrorCategoryRequired" xml:space="preserve">
     <value>Veuillez sélectionner une catégorie.</value>
+  </data>
+  <data name="Navigation" xml:space="preserve">
+    <value>NAVIGATION</value>
+  </data>
+  <data name="QuickStats" xml:space="preserve">
+    <value>Statistiques</value>
+  </data>
+  <data name="ManageBookDetails" xml:space="preserve">
+    <value>Gérer les livres et leurs détails</value>
+  </data>
+  <data name="ManageBookCategorie" xml:space="preserve">
+    <value>Gérer les catégories de livres</value>
+  </data>
+  <data name="ManageAuthInfo" xml:space="preserve">
+    <value>Gérer les auteurs et leurs informations</value>
+  </data>
+  <data name="LibraryStat" xml:space="preserve">
+    <value>Statistiques et analyses de la bibliothèque</value>
+  </data>
+  <data name="DatePicker_Placeholder" xml:space="preserve">
+    <value>Sélectionner une date</value>
+  </data>
+  <data name="ManageAuthors" xml:space="preserve">
+    <value>Gérer les Auteurs</value>
+  </data>
+  <data name="ManageBooks" xml:space="preserve">
+    <value>Gérer les Livres</value>
+  </data>
+  <data name="ViewStatistics" xml:space="preserve">
+    <value>Voir les Statistiques</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Bienvenue dans votre Bibliothèque</value>
+  </data>
+  <data name="WelcomeSubtitle" xml:space="preserve">
+    <value>Votre portail de gestion littéraire</value>
+  </data>
+  <data name="ExploreTitle" xml:space="preserve">
+    <value>Explorez votre collection</value>
+  </data>
+  <data name="ExploreDescription" xml:space="preserve">
+    <value>Découvrez et gérez votre trésor littéraire avec facilité. Votre bibliothèque numérique vous offre un accès instantané à toute votre collection.</value>
+  </data>
+  <data name="Feature1Title" xml:space="preserve">
+    <value>Collection Complète</value>
+  </data>
+  <data name="Feature1Description" xml:space="preserve">
+    <value>Accédez à tous vos livres en un clic</value>
+  </data>
+  <data name="Feature2Title" xml:space="preserve">
+    <value>Auteurs Organisés</value>
+  </data>
+  <data name="Feature2Description" xml:space="preserve">
+    <value>Retrouvez facilement vos écrivains préférés</value>
+  </data>
+  <data name="Feature3Title" xml:space="preserve">
+    <value>Catégories Intelligentes</value>
+  </data>
+  <data name="Feature3Description" xml:space="preserve">
+    <value>Classez vos livres par genre et thème</value>
+  </data>
+  <data name="QuoteText" xml:space="preserve">
+    <value>La lecture est une amitié</value>
+  </data>
+  <data name="QuoteAuthor" xml:space="preserve">
+    <value>Marcel Proust</value>
+  </data>
+  <data name="NavigationTitle" xml:space="preserve">
+    <value>Comment naviguer ?</value>
+  </data>
+  <data name="NavigationDescription" xml:space="preserve">
+    <value>Utilisez le menu de navigation sur le côté gauche pour explorer les différentes sections de votre bibliothèque : Auteurs, Livres, Catégories et Statistiques.</value>
+  </data>
+  <data name="StatusMessage" xml:space="preserve">
+    <value>Votre bibliothèque est prête à être explorée</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Page d'accueil</value>
   </data>
 </root>

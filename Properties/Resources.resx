@@ -276,7 +276,82 @@
   <data name="ErrorCategoryRequired" xml:space="preserve">
     <value>Please select a category.</value>
   </data>
-  <data name="SelectCategory" xml:space="preserve">
-    <value>Select a category...</value>
+  <data name="Navigation" xml:space="preserve">
+    <value>NAVIGATION</value>
+  </data>
+  <data name="QuickStats" xml:space="preserve">
+    <value>Quick Stats</value>
+  </data>
+  <data name="ManageBookDetails" xml:space="preserve">
+    <value>Manage books and their details</value>
+  </data>
+  <data name="ManageBookCategorie" xml:space="preserve">
+    <value>Manage book categories</value>
+  </data>
+  <data name="ManageAuthInfo" xml:space="preserve">
+    <value>Manage authors and their information</value>
+  </data>
+  <data name="LibraryStat" xml:space="preserve">
+    <value>Library statistics and insights</value>
+  </data>
+  <data name="DatePicker_Placeholder" xml:space="preserve">
+    <value>Select a date</value>
+  </data>
+  <data name="ManageAuthors" xml:space="preserve">
+    <value>Manage Authors</value>
+  </data>
+  <data name="ManageBooks" xml:space="preserve">
+    <value>Manage Books</value>
+  </data>
+  <data name="ViewStatistics" xml:space="preserve">
+    <value>View Statistics</value>
+  </data>
+  <data name="WelcomeTitle" xml:space="preserve">
+    <value>Welcome to your Library</value>
+  </data>
+  <data name="WelcomeSubtitle" xml:space="preserve">
+    <value>Your literary management portal</value>
+  </data>
+  <data name="ExploreTitle" xml:space="preserve">
+    <value>Explore your collection</value>
+  </data>
+  <data name="ExploreDescription" xml:space="preserve">
+    <value>Discover and manage your literary treasure with ease. Your digital library gives you instant access to your entire collection.</value>
+  </data>
+  <data name="Feature1Title" xml:space="preserve">
+    <value>Complete Collection</value>
+  </data>
+  <data name="Feature1Description" xml:space="preserve">
+    <value>Access all your books with one click</value>
+  </data>
+  <data name="Feature2Title" xml:space="preserve">
+    <value>Organized Authors</value>
+  </data>
+  <data name="Feature2Description" xml:space="preserve">
+    <value>Easily find your favorite writers</value>
+  </data>
+  <data name="Feature3Title" xml:space="preserve">
+    <value>Smart Categories</value>
+  </data>
+  <data name="Feature3Description" xml:space="preserve">
+    <value>Classify your books by genre and theme</value>
+  </data>
+  <data name="QuoteText" xml:space="preserve">
+    <value>Reading is a friendship</value>
+  </data>
+  <data name="QuoteAuthor" xml:space="preserve">
+    <value>Marcel Proust</value>
+  </data>
+  <data name="NavigationTitle" xml:space="preserve">
+    <value>How to navigate?</value>
+  </data>
+  <data name="NavigationDescription" xml:space="preserve">
+    <value>Use the navigation menu on the left side to explore the different sections of your library: Authors, Books, Categories and Statistics.</value>
+  </data>
+  <data name="StatusMessage" xml:space="preserve">
+    <value>Your library is ready to be explored</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home Page</value>
   </data>
 </root>

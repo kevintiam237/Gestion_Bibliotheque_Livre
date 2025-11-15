@@ -205,6 +205,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Select a date.
+        /// </summary>
+        public static string DatePicker_Placeholder {
+            get {
+                return ResourceManager.GetString("DatePicker_Placeholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Delete.
         /// </summary>
         public static string Delete {
@@ -304,6 +313,78 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Discover and manage your literary treasure with ease. Your digital library gives you instant access to your entire collection..
+        /// </summary>
+        public static string ExploreDescription {
+            get {
+                return ResourceManager.GetString("ExploreDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Explore your collection.
+        /// </summary>
+        public static string ExploreTitle {
+            get {
+                return ResourceManager.GetString("ExploreTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Access all your books with one click.
+        /// </summary>
+        public static string Feature1Description {
+            get {
+                return ResourceManager.GetString("Feature1Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Complete Collection.
+        /// </summary>
+        public static string Feature1Title {
+            get {
+                return ResourceManager.GetString("Feature1Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Easily find your favorite writers.
+        /// </summary>
+        public static string Feature2Description {
+            get {
+                return ResourceManager.GetString("Feature2Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Organized Authors.
+        /// </summary>
+        public static string Feature2Title {
+            get {
+                return ResourceManager.GetString("Feature2Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Classify your books by genre and theme.
+        /// </summary>
+        public static string Feature3Description {
+            get {
+                return ResourceManager.GetString("Feature3Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Smart Categories.
+        /// </summary>
+        public static string Feature3Title {
+            get {
+                return ResourceManager.GetString("Feature3Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à First Name.
         /// </summary>
         public static string FirstName {
@@ -318,6 +399,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         public static string GeneralInformation {
             get {
                 return ResourceManager.GetString("GeneralInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Home Page.
+        /// </summary>
+        public static string Home {
+            get {
+                return ResourceManager.GetString("Home", resourceCulture);
             }
         }
         
@@ -376,11 +466,65 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Library statistics and insights.
+        /// </summary>
+        public static string LibraryStat {
+            get {
+                return ResourceManager.GetString("LibraryStat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Library Statistics.
         /// </summary>
         public static string LibraryStatistics {
             get {
                 return ResourceManager.GetString("LibraryStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Manage authors and their information.
+        /// </summary>
+        public static string ManageAuthInfo {
+            get {
+                return ResourceManager.GetString("ManageAuthInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Manage Authors.
+        /// </summary>
+        public static string ManageAuthors {
+            get {
+                return ResourceManager.GetString("ManageAuthors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Manage book categories.
+        /// </summary>
+        public static string ManageBookCategorie {
+            get {
+                return ResourceManager.GetString("ManageBookCategorie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Manage books and their details.
+        /// </summary>
+        public static string ManageBookDetails {
+            get {
+                return ResourceManager.GetString("ManageBookDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Manage Books.
+        /// </summary>
+        public static string ManageBooks {
+            get {
+                return ResourceManager.GetString("ManageBooks", resourceCulture);
             }
         }
         
@@ -399,6 +543,33 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         public static string MostPopularCategory {
             get {
                 return ResourceManager.GetString("MostPopularCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à NAVIGATION.
+        /// </summary>
+        public static string Navigation {
+            get {
+                return ResourceManager.GetString("Navigation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Use the navigation menu on the left side to explore the different sections of your library: Authors, Books, Categories and Statistics..
+        /// </summary>
+        public static string NavigationDescription {
+            get {
+                return ResourceManager.GetString("NavigationDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à How to navigate?.
+        /// </summary>
+        public static string NavigationTitle {
+            get {
+                return ResourceManager.GetString("NavigationTitle", resourceCulture);
             }
         }
         
@@ -475,6 +646,33 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Quick Stats.
+        /// </summary>
+        public static string QuickStats {
+            get {
+                return ResourceManager.GetString("QuickStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Marcel Proust.
+        /// </summary>
+        public static string QuoteAuthor {
+            get {
+                return ResourceManager.GetString("QuoteAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Reading is a friendship.
+        /// </summary>
+        public static string QuoteText {
+            get {
+                return ResourceManager.GetString("QuoteText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Select an author....
         /// </summary>
         public static string SelectAuthor {
@@ -498,6 +696,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         public static string Statistics {
             get {
                 return ResourceManager.GetString("Statistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Your library is ready to be explored.
+        /// </summary>
+        public static string StatusMessage {
+            get {
+                return ResourceManager.GetString("StatusMessage", resourceCulture);
             }
         }
         
@@ -534,6 +741,33 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         public static string TitleApp {
             get {
                 return ResourceManager.GetString("TitleApp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à View Statistics.
+        /// </summary>
+        public static string ViewStatistics {
+            get {
+                return ResourceManager.GetString("ViewStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Your literary management portal.
+        /// </summary>
+        public static string WelcomeSubtitle {
+            get {
+                return ResourceManager.GetString("WelcomeSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Welcome to your Library.
+        /// </summary>
+        public static string WelcomeTitle {
+            get {
+                return ResourceManager.GetString("WelcomeTitle", resourceCulture);
             }
         }
     }
