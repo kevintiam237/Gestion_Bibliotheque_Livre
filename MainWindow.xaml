@@ -14,9 +14,7 @@
         Background="{StaticResource BackgroundGradient}">
 
     <Grid>
-        <!-- Lignes: En-tête / Barre d'erreur / Contenu -->
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
