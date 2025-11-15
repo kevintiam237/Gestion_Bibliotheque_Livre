@@ -26,7 +26,7 @@ namespace Gestion_Bibliotheque_Livre.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=L-107-MEDDOUR;Database=BibliothequeDB;Integrated Security=True;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=KEVINTIAM;Database=BibliothequeDB;Integrated Security=True;TrustServerCertificate=True;");
             }
         }
 

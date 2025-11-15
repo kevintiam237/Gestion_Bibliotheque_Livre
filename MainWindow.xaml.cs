@@ -22,7 +22,7 @@ namespace Gestion_Bibliotheque_Livre
             this.Language = XmlLanguage.GetLanguage(culture.IetfLanguageTag);
 
             resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(MainWindow).Assembly);
-           
+
             InitializeComponent();
             ChargerDonnee();
             this.Loaded += MainWindowLoaded;
@@ -58,55 +58,6 @@ namespace Gestion_Bibliotheque_Livre
             NavHeader.Text = resourceManager.GetString("Navigation");
             QuickStatsHeader.Text = resourceManager.GetString("QuickStats");
             BtnNavHome.Content = $"🏠 {resourceManager.GetString("Home")}";
-
-            //// Onglet Auteurs
-            //GroupBoxAuthors.Header = resourceManager.GetString("AuthorManagement");
-            //LabelLastName.Content = $"{resourceManager.GetString("LastName")} :";
-            //LabelFirstName.Content = $"{resourceManager.GetString("FirstName")} :";
-            //BtnAddAuthor.Content = $"➕ {resourceManager.GetString("Add")}";
-            //BtnEditAuthor.Content = $"✏️ {resourceManager.GetString("Edit")}";
-            //BtnDeleteAuthor.Content = $"🗑️ {resourceManager.GetString("Delete")}";
-            //ColAuthorLastName.Header = resourceManager.GetString("LastName");
-            //ColAuthorFirstName.Header = resourceManager.GetString("FirstName");
-            //ColAuthorBooksCount.Header = resourceManager.GetString("BooksCount");
-
-            //// Onglet Livres
-            //GroupBoxBooks.Header = resourceManager.GetString("BookManagement");
-            //LabelBookTitle.Content = $"{resourceManager.GetString("BookTitle")} :";
-            //LabelAuthor.Content = $"{resourceManager.GetString("Authors")} :";
-            //LabelDate.Content = $"{resourceManager.GetString("Date")} :";
-            //LabelISBN.Content = $"{resourceManager.GetString("ISBN")} :";
-            //LabelPages.Content = $"{resourceManager.GetString("NumberOfPages")} :";
-            //LabelCategoriesBook.Content = $"{resourceManager.GetString("Categories")} :";
-            //LabelCopies.Content = $"{resourceManager.GetString("NumberOfCopies")} :";
-            //BtnAddBook.Content = $"➕ {resourceManager.GetString("Add")}";
-            //BtnEditBook.Content = $"✏️ {resourceManager.GetString("Edit")}";
-            //BtnDeleteBook.Content = $"🗑️ {resourceManager.GetString("Delete")}";
-            //ColBookTitle.Header = resourceManager.GetString("BookTitle");
-            //ColBookAuthor.Header = resourceManager.GetString("Author");
-            //ColBookDate.Header = resourceManager.GetString("Date");
-            //ColBookISBN.Header = resourceManager.GetString("ISBN");
-            //ColBookPages.Header = resourceManager.GetString("Pages");
-            //ColBookCopies.Header = resourceManager.GetString("Copies");
-
-            //// Onglet Catégories
-            //GroupBoxCategories.Header = resourceManager.GetString("CategoryManagement");
-            //LabelCategoryName.Content = $"{resourceManager.GetString("CategoryName")} :";
-            //BtnAddCategory.Content = $"➕ {resourceManager.GetString("Add")}";
-            //BtnEditCategory.Content = $"✏️ {resourceManager.GetString("Edit")}";
-            //BtnDeleteCategory.Content = $"🗑️ {resourceManager.GetString("Delete")}";
-            //ColCategoryName.Header = resourceManager.GetString("CategoryName");
-            //ColCategoryBooksCount.Header = resourceManager.GetString("BooksCount");
-
-            //// Onglet Statistiques
-            //StatTitle.Text = resourceManager.GetString("LibraryStatistics");
-            //StatAuthorsTitle.Text = resourceManager.GetString("NumberOfAuthors");
-            //StatBooksTitle.Text = resourceManager.GetString("NumberOfBooks");
-            //StatCategoriesTitle.Text = resourceManager.GetString("NumberOfCategories");
-            //InfoTitle.Text = $"ℹ️ {resourceManager.GetString("GeneralInformation")}";
-            //InfoAuthor.Text = $"• {resourceManager.GetString("AuthorWithMostbooks")}:";
-            //InfoCategory.Text = $"• {resourceManager.GetString("MostPopularCategory")}:";
-            //InfoLastBook.Text = $"• {resourceManager.GetString("LastBookAdded")}:";
         }
         private void NavigateToPage(string pageName)
         {
@@ -190,7 +141,7 @@ namespace Gestion_Bibliotheque_Livre
                 {
                     statisticsPage.UpdateUIWithResources();
                 }
-                if(MainFrame.Content is AccueilPage accueilPage)
+                if (MainFrame.Content is AccueilPage accueilPage)
                 {
                     accueilPage.UpdateUIWithResources();
                 }
@@ -219,77 +170,6 @@ namespace Gestion_Bibliotheque_Livre
             QuickBooksCount.Text = booksCount.ToString();
             QuickCategoriesCount.Text = categoriesCount.ToString();
 
-        }
-
-        /// <summary>
-        /// Calcule et affiche les statistiques (comptes + infos “top”) selon la langue courante.
-        /// </summary>
-        private void ChargerStatistiques()
-        {
-            try
-            {
-                using var ctx = new DbContextBibliotheque();
-
-                // Compteurs globaux
-                int nbAuteurs = ctx.Auteurs.Count();
-                int nbLivres = ctx.Livres.Count();
-                int nbCategories = ctx.Categories.Count();
-
-                StatAuthorsValue.Text = nbAuteurs.ToString("N0", CultureInfo.CurrentUICulture);
-                StatBooksValue.Text = nbLivres.ToString("N0", CultureInfo.CurrentUICulture);
-                StatCategoriesValue.Text = nbCategories.ToString("N0", CultureInfo.CurrentUICulture);
-
-                // Auteur avec le plus de livres
-                var auteurTop = ctx.Auteurs
-                    .Select(a => new { a.Nom, a.Prenom, Count = a.Livres.Count })
-                    .OrderByDescending(a => a.Count)
-                    .ThenBy(a => a.Nom)
-                    .FirstOrDefault();
-
-                InfoAuthorValue.Text =
-                    auteurTop != null && auteurTop.Count > 0
-                        ? $"{auteurTop.Nom} {auteurTop.Prenom} ({auteurTop.Count})"
-                        : (resourceManager.GetString("NoData") ?? "-");
-
-                // Catégorie la plus populaire
-                var categorieTop = ctx.Categories
-                    .Select(c => new { c.Nom, Count = c.LivreCategories.Count })
-                    .OrderByDescending(c => c.Count)
-                    .ThenBy(c => c.Nom)
-                    .FirstOrDefault();
-
-                InfoCategoryvalue.Text =
-                    categorieTop != null && categorieTop.Count > 0
-                        ? $"{categorieTop.Nom} ({categorieTop.Count})"
-                        : (resourceManager.GetString("NoData") ?? "-");
-
-                // Dernier livre ajouté (par Id décroissant)
-                var dernierLivre = ctx.Livres
-                    .OrderByDescending(l => l.Id)
-                    .FirstOrDefault();
-
-                if (dernierLivre != null)
-                {
-                    // Utiliser la propriété formatée dépendante de la culture
-                    var temp = new Livre
-                    {
-                        Id = dernierLivre.Id,
-                        Titre = dernierLivre.Titre,
-                        DatePublication = dernierLivre.DatePublication
-                    };
-                    string dateStr = temp.DatePublicationFormatee;
-                    InfoLastBookValue.Text = $"{dernierLivre.Titre} — {dateStr}";
-                }
-                else
-                {
-                    InfoLastBookValue.Text = resourceManager.GetString("NoData") ?? "-";
-                }
-            }
-            catch (Exception ex)
-            {
-                // En cas d'erreur inattendue sur les stats, on affiche dans la barre d'erreur
-                AfficherErreur("ErrorUnexpected", ex.Message);
-            }
         }
     }
 }
