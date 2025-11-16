@@ -1,4 +1,7 @@
-﻿using System.Resources;
+﻿using BibliothequeApp.Models;
+using Gestion_Bibliotheque_Livre.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using BibliothequeApp.Models;
@@ -15,6 +18,7 @@ namespace Gestion_Bibliotheque_Livre.Views
 
         public AuthorsPage()
         {
+            resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(AuthorsPage).Assembly);
             InitializeComponent();
 
             // Initialiser le ResourceManager
@@ -27,6 +31,7 @@ namespace Gestion_Bibliotheque_Livre.Views
 
             // Mettre à jour l'interface avec les ressources
             UpdateUIWithResources();
+            ChargerAuthors();
 
             // Charger les données
             ChargerAuteurs();
@@ -67,7 +72,39 @@ namespace Gestion_Bibliotheque_Livre.Views
                 AfficherErreur("ErrorUnexpected", ex.Message);
             }
         }
+            
+        public void ChargerAuthors()
+        {
+            using (var ListeDesAutheurs = new DbContextBibliotheque())
+            {
+                var authors = ListeDesAutheurs.Auteurs
+                    .Include(a => a.Livres)
+                    .ToList();
 
+                var auteursAvecNombreLivres = authors.Select(a => new
+                {
+                    Id = a.Id,
+                    Nom = a.Nom,
+                    Prenom = a.Prenom,
+                    NombreLivres = a.Livres?.Count ?? 0
+                }).ToList();
+
+                DataGridAuthors.ItemsSource = auteursAvecNombreLivres;
+            }
+        }
+
+        private void DataG_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var authorselected = DataGridAuthors.SelectedItem as Auteur;
+            if(authorselected == null)
+            {
+                return;
+            }
+
+            TxtAuthorLastName.Text = authorselected.Nom;
+            TxtAuthorFirstName.Text = authorselected.Prenom;
+
+        }
         // ==================== ÉVÉNEMENTS ====================
 
         
@@ -428,5 +465,10 @@ namespace Gestion_Bibliotheque_Livre.Views
             _context?.Dispose();
         }
     }
+
+    internal class Auteurs
+    {
+    }
+}
 }
     

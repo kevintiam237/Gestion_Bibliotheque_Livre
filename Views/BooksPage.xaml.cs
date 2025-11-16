@@ -118,17 +118,14 @@ namespace Gestion_Bibliotheque_Livre.Views
                     .ThenBy(a => a.Prenom)
                     .ToList();
 
-                // Vide le ComboBox
                 ComboBoxAuthorSelect.Items.Clear();
 
-                // Ajoute l'option par défaut
                 ComboBoxAuthorSelect.Items.Add(new ComboBoxItem
                 {
-                    Content = resourceManager.GetString("SelectAuthor"), // Utilisation de resourceManager
+                    Content = resourceManager.GetString("SelectAuthor"), 
                     Tag = null
                 });
 
-                // Ajoute chaque auteur avec son nom complet et son ID en Tag
                 foreach (var auteur in auteurs)
                 {
                     ComboBoxAuthorSelect.Items.Add(new ComboBoxItem
@@ -138,7 +135,6 @@ namespace Gestion_Bibliotheque_Livre.Views
                     });
                 }
 
-                // Sélectionne la première option (par défaut)
                 ComboBoxAuthorSelect.SelectedIndex = 0;
             }
         }
@@ -148,41 +144,30 @@ namespace Gestion_Bibliotheque_Livre.Views
         /// </summary>
         public void ChargerCategories()
         {
-            using (var ListeDesLivres = new DbContextBibliotheque())
+            using (var DonneeDB = new DbContextBibliotheque())
             {
-                var categories = ListeDesLivres.Categories
+                var categories = DonneeDB.Categories
                     .OrderBy(c => c.Nom)
-                    .Select(c => new
+                    .Select(c => new Categorie
                     {
-                        c.Id,
-                        c.Nom,
-                        NombreLivres = c.LivreCategories.Count()
+                        Id = c.Id,
+                        Nom = c.Nom
                     })
                     .ToList();
 
-                // ✅ Vide le ComboBox avant d'ajouter les éléments
-                ComboBoxCategoriesSelect.Items.Clear();
-
-                // Ajoute l'option par défaut
-                ComboBoxCategoriesSelect.Items.Add(new ComboBoxItem
-                {
-                    Content = resourceManager.GetString("SelectCategory"), // Utilisation de resourceManager
-                    Tag = null
-                });
-
-                // Ajoute chaque catégorie avec son nom et son ID en Tag
-                foreach (var categorie in categories)
-                {
-                    ComboBoxCategoriesSelect.Items.Add(new ComboBoxItem
-                    {
-                        Content = categorie.Nom,
-                        Tag = categorie.Id
-                    });
-                }
-
-                // Sélectionne la première option (par défaut)
-                ComboBoxCategoriesSelect.SelectedIndex = 0;
+                ListBoxCategoriesSelect.ItemsSource = categories;
+                ListBoxCategoriesSelect.SelectedValuePath = "Id";
+                ListBoxCategoriesSelect.DisplayMemberPath = "Nom";
             }
+        }
+
+        // Récupère les IDs des catégories sélectionnées
+        private List<int> GetSelectedCategoryIds()
+        {
+            return ListBoxCategoriesSelect.SelectedItems
+                .Cast<Categorie>()
+                .Select(c => c.Id)
+                .ToList();
         }
 
         /// <summary>
@@ -193,35 +178,30 @@ namespace Gestion_Bibliotheque_Livre.Views
         private void dgvBooks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedLivre = dgvBooks.SelectedItem as Livre;
+            if (selectedLivre == null)
+                return;
 
-            if (selectedLivre != null)
+            TxtBookTitle.Text = selectedLivre.Titre;
+            TxtISBN.Text = selectedLivre.DetailsLivre?.ISBN;
+            TxtPages.Text = selectedLivre.DetailsLivre?.NombrePages.ToString();
+            TxtCopies.Text = selectedLivre.DetailsLivre?.NombreExemplaires.ToString();
+            DatePickerPublication.SelectedDate = selectedLivre.DatePublication;
+
+            foreach (ComboBoxItem item in ComboBoxAuthorSelect.Items)
             {
-                // Remplit les champs du formulaire
-                TxtBookTitle.Text = selectedLivre.Titre;
-                TxtISBN.Text = selectedLivre.DetailsLivre?.ISBN ?? string.Empty;
-                TxtPages.Text = selectedLivre.DetailsLivre?.NombrePages.ToString() ?? "1";
-                TxtCopies.Text = selectedLivre.DetailsLivre?.NombreExemplaires.ToString() ?? "1";
-                DatePickerPublication.SelectedDate = selectedLivre.DatePublication;
-
-                // Sélectionne l’auteur correspondant dans le ComboBox
-                foreach (ComboBoxItem item in ComboBoxAuthorSelect.Items)
+                if (item.Tag is int auteurId && auteurId == selectedLivre.AuteurId)
                 {
-                    if (item.Tag is int auteurId && auteurId == selectedLivre.AuteurId)
-                    {
-                        ComboBoxAuthorSelect.SelectedItem = item;
-                        break;
-                    }
+                    ComboBoxAuthorSelect.SelectedItem = item;
+                    break;
                 }
+            }
 
-                // Sélectionne la catégorie correspondante dans le ComboBox
-                foreach (ComboBoxItem item in ComboBoxCategoriesSelect.Items)
-                {
-                    if (item.Tag is int categorieId && selectedLivre.LivreCategories.Any(lc => lc.CategorieId == categorieId))
-                    {
-                        ComboBoxCategoriesSelect.SelectedItem = item;
-                        break;
-                    }
-                }
+            var bookCategoryIds = selectedLivre.LivreCategories.Select(lc => lc.CategorieId).ToHashSet();
+            ListBoxCategoriesSelect.SelectedItems.Clear();
+            foreach (var cat in ListBoxCategoriesSelect.Items.Cast<Categorie>())
+            {
+                if (bookCategoryIds.Contains(cat.Id))
+                    ListBoxCategoriesSelect.SelectedItems.Add(cat);
             }
         }
 
@@ -234,40 +214,28 @@ namespace Gestion_Bibliotheque_Livre.Views
         {
             try
             {
-                MasquerErreur(); // Cache tout message d'erreur précédent
-
-                // Valide les champs du formulaire
+                MasquerErreur();
                 if (!ValiderFormulaireLivre())
                     return;
 
-                // Récupère l'ID de l'auteur sélectionné
                 if (!(ComboBoxAuthorSelect.SelectedItem is ComboBoxItem authorItem) || !(authorItem.Tag is int auteurId))
                 {
                     AfficherErreur("ErrorAuthorRequired");
                     return;
                 }
 
-                // Récupère l'ID de la catégorie sélectionnée
-                if (!(ComboBoxCategoriesSelect.SelectedItem is ComboBoxItem catItem) || !(catItem.Tag is int categorieId))
-                {
-                    AfficherErreur("ErrorCategoryRequired");
-                    return;
-                }
+                var selectedCategoryIds = GetSelectedCategoryIds();
 
-                // Vérifie si un livre avec le même titre et auteur existe déjà
-                using (var ListeDesLivres = new DbContextBibliotheque())
+                using (var ctx = new DbContextBibliotheque())
                 {
-                    var livreExiste = ListeDesLivres.Livres
-                        .FirstOrDefault(l => l.Titre == TxtBookTitle.Text.Trim() && l.AuteurId == auteurId);
-
-                    if (livreExiste != null)
+                    // Doublon titre+auteur
+                    if (ctx.Livres.Any(l => l.Titre == TxtBookTitle.Text.Trim() && l.AuteurId == auteurId))
                     {
                         AfficherErreur("ErrorBookExists");
                         return;
                     }
 
-                    // Crée un nouveau livre
-                    var nouveauLivre = new Livre
+                    var livre = new Livre
                     {
                         Titre = TxtBookTitle.Text.Trim(),
                         DatePublication = DatePickerPublication.SelectedDate ?? DateTime.Now,
@@ -277,47 +245,42 @@ namespace Gestion_Bibliotheque_Livre.Views
                             ISBN = TxtISBN.Text,
                             NombrePages = int.TryParse(TxtPages.Text, out int pages) ? pages : 0,
                             NombreExemplaires = int.TryParse(TxtCopies.Text, out int copies) ? copies : 0
-                        }
+                        },
+                        LivreCategories = new List<LivreCategorie>()
                     };
 
-                    ListeDesLivres.Livres.Add(nouveauLivre);
-                    ListeDesLivres.SaveChanges();
+                    ctx.Livres.Add(livre);
+                    ctx.SaveChanges();
 
-                    // Lie le livre à la catégorie sélectionnée
-                    ListeDesLivres.LivreCategories.Add(new LivreCategorie
+                    foreach (var catId in selectedCategoryIds)
                     {
-                        LivreId = nouveauLivre.Id,
-                        CategorieId = categorieId
-                    });
-                    ListeDesLivres.SaveChanges();
-
-                    // Recharge la liste des livres pour afficher le nouveau
-                    ChargerLivres(); // 3. Correction : appel de ChargerLivres (pluriel)
+                        ctx.LivreCategories.Add(new LivreCategorie
+                        {
+                            LivreId = livre.Id,
+                            CategorieId = catId
+                        });
+                    }
+                    ctx.SaveChanges();
                 }
 
-                // Vide le formulaire après ajout
                 ViderFormulaireLivre();
-
-                // Affiche un message de succès
-                MessageBox.Show(
-                    resourceManager.GetString("SuccessBookAdded") ?? "Le livre a été ajouté avec succès !",
+                ChargerLivres();
+                MessageBox.Show(resourceManager.GetString("SuccessBookAdded") ?? "Livre ajouté.",
                     resourceManager.GetString("Success") ?? "Succès",
                     MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
+                    MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                // En cas d'erreur inattendue, affiche le message avec le détail de l'exception
                 AfficherErreur("ErrorUnexpected", ex.Message);
             }
         }
-
         /// <summary>
         /// Valide tous les champs du formulaire d'ajout de livre.
         /// Affiche un message d'erreur si un champ est invalide.
         /// Retourne true si tout est valide, false sinon.
         /// </summary>
+               // Validation: au moins une catégorie
         private bool ValiderFormulaireLivre()
         {
             if (string.IsNullOrWhiteSpace(TxtBookTitle.Text))
@@ -325,44 +288,37 @@ namespace Gestion_Bibliotheque_Livre.Views
                 AfficherErreur("ErrorBookTitle");
                 return false;
             }
-
             if (ComboBoxAuthorSelect.SelectedIndex <= 0)
             {
                 AfficherErreur("ErrorAuthorRequired");
                 return false;
             }
-
             if (DatePickerPublication.SelectedDate == null)
             {
                 AfficherErreur("ErrorDateRequired");
                 return false;
             }
-
             if (string.IsNullOrWhiteSpace(TxtISBN.Text))
             {
                 AfficherErreur("ErrorISBNRequired");
                 return false;
             }
-
             if (!int.TryParse(TxtPages.Text, out int pages) || pages <= 0)
             {
                 AfficherErreur("ErrorPagesInvalid");
                 return false;
             }
-
             if (!int.TryParse(TxtCopies.Text, out int copies) || copies < 0)
             {
                 AfficherErreur("ErrorCopiesInvalid");
                 return false;
             }
-
-            if (ComboBoxCategoriesSelect.SelectedIndex <= 0)
+            if (GetSelectedCategoryIds().Count == 0)
             {
                 AfficherErreur("ErrorCategoryRequired");
                 return false;
             }
-
-            return true; // Tous les champs sont valides
+            return true;
         }
 
         /// <summary>
@@ -433,9 +389,8 @@ namespace Gestion_Bibliotheque_Livre.Views
             TxtCopies.Clear();
             DatePickerPublication.SelectedDate = null;
             ComboBoxAuthorSelect.SelectedIndex = 0;
-            ComboBoxCategoriesSelect.SelectedIndex = 0;
+            ListBoxCategoriesSelect.SelectedItems.Clear();
         }
-
 
         /// <summary>
         /// Gestionnaire du bouton "Supprimer un livre".
@@ -503,8 +458,6 @@ namespace Gestion_Bibliotheque_Livre.Views
             try
             {
                 MasquerErreur();
-
-                // Validation UI
                 if (!ValiderFormulaireLivre())
                     return;
 
@@ -514,87 +467,72 @@ namespace Gestion_Bibliotheque_Livre.Views
                     return;
                 }
 
-                if (!(ComboBoxCategoriesSelect.SelectedItem is ComboBoxItem catItem) || !(catItem.Tag is int categorieId))
-                {
-                    AfficherErreur("ErrorCategoryRequired");
-                    return;
-                }
-
                 var selectedLivre = dgvBooks.SelectedItem as Livre;
                 if (selectedLivre == null)
                 {
-                    AfficherErreur("ErrorBookTitle"); // Ou une clé dédiée: ErrorSelectBook
+                    AfficherErreur("ErrorBookTitle");
                     return;
                 }
 
-                using (var ListeDesLivres = new DbContextBibliotheque())
+                var selectedCategoryIds = GetSelectedCategoryIds();
+
+                using (var donneDB = new DbContextBibliotheque())
                 {
-                    // Recharger l’entité dans le contexte (instance suivie unique)
-                    var livreToUpdate = ListeDesLivres.Livres
+                    var livreToUpdate = donneDB.Livres
                         .Include(l => l.DetailsLivre)
                         .Include(l => l.LivreCategories)
                         .FirstOrDefault(l => l.Id == selectedLivre.Id);
 
                     if (livreToUpdate == null)
                     {
-                        ChargerLivres(); // 3. Correction : appel de ChargerLivres (pluriel)
+                        ChargerLivres();
                         return;
                     }
 
-                    // Éviter les doublons Titre + Auteur
                     string nouveauTitre = TxtBookTitle.Text.Trim();
-                    bool existeDeja = ListeDesLivres.Livres
-                        .Any(l => l.Id != livreToUpdate.Id && l.Titre == nouveauTitre && l.AuteurId == auteurId);
+                    bool existeDeja = donneDB.Livres.Any(l => l.Id != livreToUpdate.Id && l.Titre == nouveauTitre && l.AuteurId == auteurId);
                     if (existeDeja)
                     {
                         AfficherErreur("ErrorBookExists");
                         return;
                     }
 
-                    // Mettre à jour les propriétés de base
                     livreToUpdate.Titre = nouveauTitre;
                     livreToUpdate.DatePublication = DatePickerPublication.SelectedDate ?? DateTime.Now;
                     livreToUpdate.AuteurId = auteurId;
 
-                    // Mettre à jour les détails
                     if (livreToUpdate.DetailsLivre == null)
-                    {
-                        livreToUpdate.DetailsLivre = new DetailsLivre
-                        {
-                            LivreId = livreToUpdate.Id
-                        };
-                    }
+                        livreToUpdate.DetailsLivre = new DetailsLivre { LivreId = livreToUpdate.Id };
+
                     livreToUpdate.DetailsLivre.ISBN = TxtISBN.Text;
                     livreToUpdate.DetailsLivre.NombrePages = int.TryParse(TxtPages.Text, out int pages) ? pages : 0;
                     livreToUpdate.DetailsLivre.NombreExemplaires = int.TryParse(TxtCopies.Text, out int copies) ? copies : 0;
 
-                    // Mettre à jour la (seule) catégorie liée
-                    if (livreToUpdate.LivreCategories == null)
-                        livreToUpdate.LivreCategories = new List<LivreCategorie>();
+                    // Mise à jour catégories
+                    var existing = livreToUpdate.LivreCategories.Select(lc => lc.CategorieId).ToHashSet();
 
-                    // Retirer les catégories différentes de celle sélectionnée
-                    var toRemove = livreToUpdate.LivreCategories
-                        .Where(lc => lc.CategorieId != categorieId)
-                        .ToList();
-                    if (toRemove.Count > 0)
-                        ListeDesLivres.LivreCategories.RemoveRange(toRemove);
-
-                    // Ajouter la catégorie sélectionnée si absente
-                    if (!livreToUpdate.LivreCategories.Any(lc => lc.CategorieId == categorieId))
+                    // Ajouter nouvelles
+                    foreach (var catId in selectedCategoryIds.Where(id => !existing.Contains(id)))
                     {
                         livreToUpdate.LivreCategories.Add(new LivreCategorie
                         {
                             LivreId = livreToUpdate.Id,
-                            CategorieId = categorieId
+                            CategorieId = catId
                         });
                     }
 
-                    ListeDesLivres.SaveChanges();
-                    ViderFormulaireLivre();
+                    // Retirer celles non sélectionnées
+                    var toRemove = livreToUpdate.LivreCategories
+                        .Where(lc => !selectedCategoryIds.Contains(lc.CategorieId))
+                        .ToList();
+                    if (toRemove.Count > 0)
+                        donneDB.LivreCategories.RemoveRange(toRemove);
+
+                    donneDB.SaveChanges();
                 }
 
-                // Rafraîchir l’affichage
-                ChargerLivres(); // 3. Correction : appel de ChargerLivres (pluriel)
+                ViderFormulaireLivre();
+                ChargerLivres();
             }
             catch (Exception ex)
             {

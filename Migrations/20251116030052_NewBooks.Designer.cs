@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gestion_Bibliotheque_Livre.Migrations
 {
     [DbContext(typeof(DbContextBibliotheque))]
-    [Migration("20251113164638_AjouterNombreExemplaires")]
-    partial class AjouterNombreExemplaires
+    [Migration("20251116030052_NewBooks")]
+    partial class NewBooks
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

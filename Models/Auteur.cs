@@ -19,7 +19,7 @@ namespace BibliothequeApp.Models
 
         // Propriété calculée pour afficher le nom complet
         [NotMapped]
-        public string NomComplet => $"{Nom} {Prenom}";
+        public string NomComplet => $"{Prenom} {Nom}";
 
         // Navigation properties
         public virtual ICollection<Livre> Livres { get; set; } = new List<Livre>();
