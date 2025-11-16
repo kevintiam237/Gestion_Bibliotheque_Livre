@@ -394,6 +394,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à 2026 Library Management System • Modern WPF Application.
+        /// </summary>
+        public static string footer {
+            get {
+                return ResourceManager.GetString("footer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à  General Information.
         /// </summary>
         public static string GeneralInformation {

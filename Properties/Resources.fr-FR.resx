@@ -354,4 +354,7 @@
   <data name="Home" xml:space="preserve">
     <value>Page d'accueil</value>
   </data>
+  <data name="footer" xml:space="preserve">
+    <value>Système de gestion de bibliothèque 2026 • Application WPF moderne</value>
+  </data>
 </root>

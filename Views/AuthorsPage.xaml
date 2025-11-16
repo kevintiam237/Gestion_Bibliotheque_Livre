@@ -43,7 +43,7 @@
                        ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                       RowStyle="{StaticResource DataGridRowStyle}"
                       CellStyle="{StaticResource DataGridCellStyle}"
-                      SelectionChanged="DataG_SelectionChanged"
+                      SelectionChanged="DataGridAuthors_SelectionChanged"
                       AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn 

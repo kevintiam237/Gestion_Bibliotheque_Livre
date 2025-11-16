@@ -354,4 +354,7 @@
   <data name="Home" xml:space="preserve">
     <value>Home Page</value>
   </data>
+  <data name="footer" xml:space="preserve">
+    <value>2026 Library Management System • Modern WPF Application</value>
+  </data>
 </root>
