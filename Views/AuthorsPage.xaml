@@ -14,7 +14,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -36,11 +35,12 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+
         <!-- DataGrid -->
         <Border Grid.Row="1" Style="{StaticResource DataGridContainerStyle}">
             <DataGrid x:Name="DataGridAuthors"
                       Style="{StaticResource ModernDataGridStyle}"
-                      ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
+                       ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                       RowStyle="{StaticResource DataGridRowStyle}"
                       CellStyle="{StaticResource DataGridCellStyle}"
                       SelectionChanged="DataGridAuthors_SelectionChanged"
@@ -72,6 +72,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
+        
         <!-- Action Panel -->
         <Border Grid.Row="3" Style="{StaticResource ActionPanelStyle}">
             <Grid>

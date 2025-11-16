@@ -522,34 +522,64 @@
         <!-- ========================================= -->
         <!-- STYLES DE DATAGRID MODERNE -->
         <!-- ========================================= -->
-        <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
-            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
-            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
-            <Setter Property="AutoGenerateColumns" Value="False"/>
-            <Setter Property="HeadersVisibility" Value="Column"/>
-            <Setter Property="CanUserAddRows" Value="False"/>
-            <Setter Property="CanUserDeleteRows" Value="False"/>
-            <Setter Property="CanUserReorderColumns" Value="True"/>
-            <Setter Property="CanUserResizeColumns" Value="True"/>
-            <Setter Property="CanUserResizeRows" Value="False"/>
-            <Setter Property="CanUserSortColumns" Value="True"/>
-            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderLightBrush}"/>
-            <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
-            <Setter Property="RowHeaderWidth" Value="0"/>
-            <!-- Améliorations visuelles -->
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="RowHeight" Value="44"/>
-            <Setter Property="ColumnHeaderHeight" Value="48"/>
-            <Setter Property="AlternationCount" Value="2"/>
-        </Style>
+<Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
+    <Setter Property="Background" Value="White"/>
+    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+    <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+    <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+    <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+    <Setter Property="AutoGenerateColumns" Value="False"/>
+    <Setter Property="HeadersVisibility" Value="Column"/>
+    <Setter Property="CanUserAddRows" Value="False"/>
+    <Setter Property="CanUserDeleteRows" Value="False"/>
+    <Setter Property="CanUserReorderColumns" Value="True"/>
+    <Setter Property="CanUserResizeColumns" Value="True"/>
+    <Setter Property="CanUserResizeRows" Value="False"/>
+    <Setter Property="CanUserSortColumns" Value="True"/>
+    <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+    <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderLightBrush}"/>
+    <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
+    <Setter Property="RowHeaderWidth" Value="0"/>
+    <!-- Sélection par ligne -->
+    <Setter Property="SelectionUnit" Value="FullRow"/>
+    <Setter Property="SelectionMode" Value="Single"/>
+    <!-- Optionnel: pas d’édition inline -->
+    <Setter Property="IsReadOnly" Value="True"/>
+
+    <!-- Améliorations visuelles -->
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="FontFamily" Value="Segoe UI"/>
+    <Setter Property="RowHeight" Value="44"/>
+    <Setter Property="ColumnHeaderHeight" Value="48"/>
+    <Setter Property="AlternationCount" Value="2"/>
+</Style>
+
+<!-- DataGridCellStyle: remplacer HorizontalAlignment par HorizontalContentAlignment -->
+<Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    
+    <Setter Property="Margin" Value="20,0,0,0"/>
+    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+    <!-- Optionnel: évite que la cellule prenne le focus (clic = sélection ligne) -->
+    <Setter Property="Focusable" Value="False"/>
+    <Style.Triggers>
+        <Trigger Property="IsSelected" Value="True">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Trigger>
+        <Trigger Property="IsMouseOver" Value="True">
+            <Setter Property="Background" Value="#F8FAFF"/>
+        </Trigger>
+    </Style.Triggers>
+</Style>
         <Style x:Key="DataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
             <!-- Nouveau design du header -->
             <Setter Property="Background" Value="{StaticResource PrimaryBrush}"/>
@@ -629,30 +659,14 @@
         </Style>
         <Style x:Key="DataGridTextStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
             <Setter Property="Padding" Value="4,0,0,0"/>
-        </Style>
-        <Style x:Key="DataGridCellStyle" TargetType="DataGridCell">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                </Trigger>
-                <!-- MouseOver sur les cellules -->
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F8FAFF"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
+
         <!--Style pour le header-->
         <Style x:Key="HeaderBooks" TargetType="Border">
             <Setter Property="Padding" Value="10,5"/>

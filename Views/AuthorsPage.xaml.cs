@@ -13,16 +13,10 @@ namespace Gestion_Bibliotheque_Livre.Views
     /// </summary>
     public partial class AuthorsPage : UserControl
     {
-        #region Champs privés
-
         /// <summary>
         /// Gestionnaire de ressources pour la gestion de l'internationalisation (français/anglais).
         /// </summary>
         private ResourceManager resourceManager;
-
-        #endregion
-
-        #region Constructeur
 
         /// <summary>
         /// Initialise une nouvelle instance de la page AuthorsPage.
@@ -44,10 +38,6 @@ namespace Gestion_Bibliotheque_Livre.Views
             AttachEventHandlers();
         }
 
-        #endregion
-
-        #region Gestion des événements UI
-
         /// <summary>
         /// Attache les gestionnaires d'événements dynamiques (hors XAML).
         /// </summary>
@@ -56,10 +46,6 @@ namespace Gestion_Bibliotheque_Livre.Views
             // Attache l'événement de changement de sélection du DataGrid
             DataGridAuthors.SelectionChanged += DataGridAuthors_SelectionChanged;
         }
-
-        #endregion
-
-        #region Chargement des données
 
         /// <summary>
         /// Charge la liste des auteurs depuis la base de données et la lie au DataGrid.
@@ -93,10 +79,6 @@ namespace Gestion_Bibliotheque_Livre.Views
                 AfficherErreur("ErrorUnexpected", ex.Message);
             }
         }
-
-        #endregion
-
-        #region Gestion des événements de sélection
 
         /// <summary>
         /// Gestionnaire d'événement pour le changement de sélection dans le DataGrid.
@@ -140,10 +122,6 @@ namespace Gestion_Bibliotheque_Livre.Views
                 AfficherErreur("ErrorUnexpected", ex.Message);
             }
         }
-
-        #endregion
-
-        #region Actions CRUD
 
         /// <summary>
         /// Gestionnaire d'événement pour le bouton d'ajout d'un auteur.
@@ -400,10 +378,6 @@ namespace Gestion_Bibliotheque_Livre.Views
             }
         }
 
-        #endregion
-
-        #region Validation des champs
-
         /// <summary>
         /// Valide les champs de saisie (nom et prénom).
         /// Affiche une erreur et met le focus sur le premier champ invalide.
@@ -427,10 +401,6 @@ namespace Gestion_Bibliotheque_Livre.Views
 
             return true;
         }
-
-        #endregion
-
-        #region Gestion des erreurs
 
         /// <summary>
         /// Affiche un message d'erreur dans l'interface utilisateur.
@@ -472,10 +442,6 @@ namespace Gestion_Bibliotheque_Livre.Views
             ErrorMessageBorder.Visibility = Visibility.Collapsed;
             TxtErrorMessage.Text = string.Empty;
         }
-
-        #endregion
-
-        #region Méthodes utilitaires
 
         /// <summary>
         /// Vide les champs de saisie (nom et prénom).
@@ -521,7 +487,5 @@ namespace Gestion_Bibliotheque_Livre.Views
             UpdateUIWithResources();
             ChargerAuteurs();
         }
-
-        #endregion
     }
 }

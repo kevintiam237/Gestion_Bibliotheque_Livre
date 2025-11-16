@@ -178,30 +178,32 @@ namespace Gestion_Bibliotheque_Livre.Views
         private void dgvBooks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedLivre = dgvBooks.SelectedItem as Livre;
-            if (selectedLivre == null)
-                return;
 
-            TxtBookTitle.Text = selectedLivre.Titre;
-            TxtISBN.Text = selectedLivre.DetailsLivre?.ISBN;
-            TxtPages.Text = selectedLivre.DetailsLivre?.NombrePages.ToString();
-            TxtCopies.Text = selectedLivre.DetailsLivre?.NombreExemplaires.ToString();
-            DatePickerPublication.SelectedDate = selectedLivre.DatePublication;
-
-            foreach (ComboBoxItem item in ComboBoxAuthorSelect.Items)
+            if (selectedLivre != null)
             {
-                if (item.Tag is int auteurId && auteurId == selectedLivre.AuteurId)
+                // Remplit les champs du formulaire avec les données du livre sélectionné
+                TxtBookTitle.Text = selectedLivre.Titre;
+                TxtISBN.Text = selectedLivre.DetailsLivre?.ISBN;
+                TxtPages.Text = selectedLivre.DetailsLivre?.NombrePages.ToString();
+                TxtCopies.Text = selectedLivre.DetailsLivre?.NombreExemplaires.ToString();
+                DatePickerPublication.SelectedDate = selectedLivre.DatePublication;
+
+                foreach (ComboBoxItem item in ComboBoxAuthorSelect.Items)
                 {
-                    ComboBoxAuthorSelect.SelectedItem = item;
-                    break;
+                    if (item.Tag is int auteurId && auteurId == selectedLivre.AuteurId)
+                    {
+                        ComboBoxAuthorSelect.SelectedItem = item;
+                        break;
+                    }
                 }
-            }
 
-            var bookCategoryIds = selectedLivre.LivreCategories.Select(lc => lc.CategorieId).ToHashSet();
-            ListBoxCategoriesSelect.SelectedItems.Clear();
-            foreach (var cat in ListBoxCategoriesSelect.Items.Cast<Categorie>())
-            {
-                if (bookCategoryIds.Contains(cat.Id))
-                    ListBoxCategoriesSelect.SelectedItems.Add(cat);
+                var bookCategoryIds = selectedLivre.LivreCategories.Select(lc => lc.CategorieId).ToHashSet();
+                ListBoxCategoriesSelect.SelectedItems.Clear();
+                foreach (var cat in ListBoxCategoriesSelect.Items.Cast<Categorie>())
+                {
+                    if (bookCategoryIds.Contains(cat.Id))
+                        ListBoxCategoriesSelect.SelectedItems.Add(cat);
+                }
             }
         }
 

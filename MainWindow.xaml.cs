@@ -58,6 +58,7 @@ namespace Gestion_Bibliotheque_Livre
             NavHeader.Text = resourceManager.GetString("Navigation");
             QuickStatsHeader.Text = resourceManager.GetString("QuickStats");
             BtnNavHome.Content = $"🏠 {resourceManager.GetString("Home")}";
+            footer.Text = $"© {resourceManager.GetString("footer")}";
         }
         private void NavigateToPage(string pageName)
         {
