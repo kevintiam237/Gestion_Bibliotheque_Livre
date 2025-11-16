@@ -357,4 +357,13 @@
   <data name="footer" xml:space="preserve">
     <value>2026 Library Management System • Modern WPF Application</value>
   </data>
+  <data name="StatusEmpty" xml:space="preserve">
+    <value>Your library is empty. Start by adding authors and books!</value>
+  </data>
+  <data name="SuccessAuthorAdded" xml:space="preserve">
+    <value>Author added successfully</value>
+  </data>
+  <data name="SuccessAuthorDeleted" xml:space="preserve">
+    <value>Author deleted successfully!</value>
+  </data>
 </root>

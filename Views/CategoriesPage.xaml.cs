@@ -64,7 +64,7 @@ namespace Gestion_Bibliotheque_Livre.Views
                     {
                         c.Id,
                         c.Nom,
-                        NombreLivres = c.LivreCategories.Count() // Calcul du nombre de livres liés
+                        NombreLivres = c.LivreCategories.Count()
                     })
                     .ToList();
 
@@ -98,50 +98,36 @@ namespace Gestion_Bibliotheque_Livre.Views
         /// </summary>
         private void BtnAddCategory_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                MasquerErreur(); // Cache tout message d'erreur précédent
-
-                // Valide le champ du nom
-                if (!ValiderFormulaireCategorie())
-                    return;
-
+                MasquerErreur();
                 var nom = TxtCategoryName.Text?.Trim();
 
-                using (var ListeDesLivres = new DbContextBibliotheque())
+                if (string.IsNullOrWhiteSpace(nom))
                 {
-                    // Vérifie si une catégorie avec le même nom existe déjà (insensible à la casse)
-                    if (ListeDesLivres.Categories.Any(c => c.Nom.Equals(nom, StringComparison.OrdinalIgnoreCase)))
+                    AfficherErreur("ErrorCategoryRequired");
+                    return;
+                }
+
+                try
+                {
+                    using var ListeDesLivres = new DbContextBibliotheque();
+
+                    if (ListeDesLivres.Categories.Any(c => c.Nom == nom))
                     {
-                        AfficherErreur("ErrorCategoryExists"); // Utilisez une clé de ressource appropriée
+                        AfficherErreur("ErrorCategoryExists");
                         return;
                     }
 
-                    // Crée et ajoute la nouvelle catégorie
                     ListeDesLivres.Categories.Add(new Categorie { Nom = nom });
                     ListeDesLivres.SaveChanges();
+
+                    TxtCategoryName.Clear();
+                    ChargerCategories();
                 }
-
-                // Vide le champ de texte après ajout
-                TxtCategoryName.Clear();
-
-                // Recharge la liste des catégories pour afficher la nouvelle
-                ChargerCategories();
-
-                // Affiche un message de succès
-                MessageBox.Show(
-                    resourceManager.GetString("SuccessCategoryAdded") ?? "La catégorie a été ajoutée avec succès !", // Utilisez une clé de ressource appropriée
-                    resourceManager.GetString("Success") ?? "Succès", // Utilisez une clé de ressource appropriée
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
-            }
-            catch (Exception ex)
-            {
-                // En cas d'erreur inattendue, affiche le message avec le détail de l'exception
-                AfficherErreur("ErrorUnexpected", ex.Message);
-            }
-        }
+                catch (Exception ex)
+                {
+                    AfficherErreur("ErrorUnexpected", ex.Message);
+                }
+         }
 
         /// <summary>
         /// Gestionnaire du bouton "Modifier une catégorie".

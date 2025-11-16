@@ -133,8 +133,6 @@ namespace Gestion_Bibliotheque_Livre.Views
         private void BtnAddAuthor_Click(object sender, RoutedEventArgs e)
         {
             using var context = new DbContextBibliotheque();
-            try
-            {
                 // Masquer les messages d'erreurs précédents
                 MasquerErreur();
 
@@ -146,16 +144,15 @@ namespace Gestion_Bibliotheque_Livre.Views
                 string prenom = TxtAuthorFirstName.Text.Trim();
 
                 // Vérification de l'existence d'un auteur avec le même nom/prénom
-                var auteurExiste = context.Auteurs
-                    .FirstOrDefault(a => string.Equals(a.Nom, nom, System.StringComparison.OrdinalIgnoreCase)
-                                      && string.Equals(a.Prenom, prenom, System.StringComparison.OrdinalIgnoreCase));
+    
+                var auteurExiste = context.Auteurs.Any(a => a.Nom == nom && a.Prenom == prenom);
 
-                if (auteurExiste != null)
-                {
-                    // Affichage d'une erreur si l'auteur existe déjà
-                    AfficherErreur("ErrorAuthorExists");
-                    return;
-                }
+            if (auteurExiste)
+            {
+                // Affichage d'une erreur si l'auteur existe déjà
+                AfficherErreur("ErrorAuthorExists");
+                return;
+            }
 
                 // Création et ajout du nouvel auteur
                 var nouvelAuteur = new Auteur
@@ -165,13 +162,11 @@ namespace Gestion_Bibliotheque_Livre.Views
                 };
 
                 context.Auteurs.Add(nouvelAuteur);
-                context.SaveChanges(); // Sauvegarde en base de données
+                context.SaveChanges(); 
 
                 // Affichage d'un message de succès dans l'interface
-                TxtErrorMessage.Text = resourceManager.GetString("SuccessAuthorAdded") ?? "Auteur ajouté avec succès !";
+                TxtErrorMessage.Text = resourceManager.GetString("SuccessAuthorAdded");
                 ErrorMessageBorder.Visibility = Visibility.Visible;
-                // Vous pouvez définir un style spécifique pour les messages de succès ici si disponible
-                // ErrorMessageBorder.Style = (Style)FindResource("SuccessMessageBorderStyle");
 
                 // Recharger la liste des auteurs et vider les champs de saisie
                 ChargerAuteurs();
@@ -189,13 +184,7 @@ namespace Gestion_Bibliotheque_Livre.Views
                 };
                 timer.Start();
             }
-            catch (Exception ex)
-            {
-                // Gestion des erreurs lors de l'ajout
-                AfficherErreur("ErrorUnexpected", ex.Message);
-            }
-        }
-
+        
         /// <summary>
         /// Gestionnaire d'événement pour le bouton de modification d'un auteur.
         /// Récupère l'auteur sélectionné, met à jour ses données et sauvegarde en base.
@@ -350,10 +339,8 @@ namespace Gestion_Bibliotheque_Livre.Views
                 context.SaveChanges();
 
                 // Affichage d'un message de succès
-                TxtErrorMessage.Text = resourceManager.GetString("SuccessAuthorDeleted") ?? "Auteur supprimé avec succès !";
+                TxtErrorMessage.Text = resourceManager.GetString("SuccessAuthorDeleted");
                 ErrorMessageBorder.Visibility = Visibility.Visible;
-                // Vous pouvez définir un style spécifique pour les messages de succès ici si disponible
-                // ErrorMessageBorder.Style = (Style)FindResource("SuccessMessageBorderStyle");
 
                 // Recharger la liste et vider les champs
                 ChargerAuteurs();
@@ -401,7 +388,6 @@ namespace Gestion_Bibliotheque_Livre.Views
 
             return true;
         }
-
         /// <summary>
         /// Affiche un message d'erreur dans l'interface utilisateur.
         /// Le message est récupéré à partir des ressources localisées.
@@ -474,18 +460,5 @@ namespace Gestion_Bibliotheque_Livre.Views
         /// <summary>
         /// Actualise les données affichées dans le DataGrid.
         /// </summary>
-        public void ActualiserDonnees()
-        {
-            ChargerAuteurs();
-        }
-
-        /// <summary>
-        /// Met à jour l'interface et recharge les données suite à un changement de langue.
-        /// </summary>
-        public void ChangerLangue()
-        {
-            UpdateUIWithResources();
-            ChargerAuteurs();
-        }
     }
 }

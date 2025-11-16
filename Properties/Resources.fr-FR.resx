@@ -357,4 +357,13 @@
   <data name="footer" xml:space="preserve">
     <value>Système de gestion de bibliothèque 2026 • Application WPF moderne</value>
   </data>
+  <data name="StatusEmpty" xml:space="preserve">
+    <value>Votre bibliothèque est vide. Commencez par ajouter des auteurs et des livres !</value>
+  </data>
+  <data name="SuccessAuthorAdded" xml:space="preserve">
+    <value>Auteur ajouté avec succès !</value>
+  </data>
+  <data name="SuccessAuthorDeleted" xml:space="preserve">
+    <value>Auteur supprimé avec succès !</value>
+  </data>
 </root>

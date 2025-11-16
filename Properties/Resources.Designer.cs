@@ -709,6 +709,15 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Your library is empty. Start by adding authors and books!.
+        /// </summary>
+        public static string StatusEmpty {
+            get {
+                return ResourceManager.GetString("StatusEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Your library is ready to be explored.
         /// </summary>
         public static string StatusMessage {
@@ -723,6 +732,24 @@ namespace Gestion_Bibliotheque_Livre.Properties {
         public static string Success {
             get {
                 return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Author added successfully.
+        /// </summary>
+        public static string SuccessAuthorAdded {
+            get {
+                return ResourceManager.GetString("SuccessAuthorAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Author deleted successfully!.
+        /// </summary>
+        public static string SuccessAuthorDeleted {
+            get {
+                return ResourceManager.GetString("SuccessAuthorDeleted", resourceCulture);
             }
         }
         

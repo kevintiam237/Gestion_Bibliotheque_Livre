@@ -1054,9 +1054,10 @@
 
         <Style x:Key="StatusTextStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
-            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontSize" Value="20"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,20,0,0"/> 
         </Style>
 
@@ -1089,7 +1090,7 @@
         </Style>
 
         <Style x:Key="SecondBorder" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource BackgroundCardBrush}"/>
+            <Setter Property="Background" Value="Beige"/>
             <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="Margin" Value="0,0,0,20"/>
             <Setter Property="Padding" Value="20"/>
@@ -1119,10 +1120,10 @@
         </Style>
 
         <Style x:Key="PointFortCard" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource BackgroundCardBrush}"/>
+            <Setter Property="Background" Value="Bisque"/>
             <Setter Property="CornerRadius" Value="10"/>
-            <Setter Property="Width" Value="220"/>
-            <Setter Property="Height" Value="140"/>
+            <Setter Property="Width" Value="230"/>
+            <Setter Property="Height" Value="160"/>
             <Setter Property="Margin" Value="15"/>
             <Setter Property="Padding" Value="20"/>
         </Style>
@@ -1145,7 +1146,7 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Margin" Value="5"/>
         </Style>
         <Style x:Key="CitationText" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White"/>

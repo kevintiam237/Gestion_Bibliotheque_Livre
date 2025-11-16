@@ -90,7 +90,8 @@
             </Border>
 
             <!-- Message de statut -->
-            <TextBlock x:Name="StatusMessageTextBlock" Text="{x:Static properties:Resources.StatusMessage}"
+            <TextBlock x:Name="StatusMessageTextBlock" 
+                       Text="{x:Static properties:Resources.StatusMessage}"
                        Style="{StaticResource StatusTextStyle}"/>
         </StackPanel>
     </ScrollViewer>
