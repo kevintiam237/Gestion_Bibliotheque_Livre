@@ -293,11 +293,7 @@ namespace Gestion_Bibliotheque_Livre.Views
             }
         }
 
-        /// <summary>
-        /// Valide le champ de saisie du nom de la catégorie.
-        /// Affiche un message d'erreur si le champ est vide.
-        /// Retourne true si le champ est valide, false sinon.
-        /// </summary>
+      
         private bool ValiderFormulaireCategorie()
         {
             if (string.IsNullOrWhiteSpace(TxtCategoryName.Text))
@@ -308,11 +304,7 @@ namespace Gestion_Bibliotheque_Livre.Views
             return true; // Le champ est valide
         }
 
-        /// <summary>
-        /// Affiche un message d'erreur dans l'interface de la page.
-        /// Stocke la clé de ressource et un éventuel paramètre pour permettre la traduction dynamique.
-        /// Affiche le message et le masque automatiquement après 5 secondes.
-        /// </summary>
+       
         private void AfficherErreur(string resourceKey, string? additionalParams = null)
         {
             currentErrorKey = resourceKey;
@@ -334,11 +326,7 @@ namespace Gestion_Bibliotheque_Livre.Views
             timer.Start();
         }
 
-        /// <summary>
-        /// Rafraîchit le texte du message d'erreur en fonction de la langue courante.
-        /// Utilise la clé stockée (currentErrorKey) pour récupérer la traduction.
-        /// Ajoute un paramètre si présent (ex: message d'exception).
-        /// </summary>
+     
         private void RafraichirMessageErreur()
         {
             if (string.IsNullOrEmpty(currentErrorKey))
@@ -354,9 +342,7 @@ namespace Gestion_Bibliotheque_Livre.Views
             TxtErrorMessage.Text = message;
         }
 
-        /// <summary>
-        /// Masque le message d'erreur en réinitialisant l'affichage.
-        /// </summary>
+       
         private void MasquerErreur()
         {
             ErrorMessageBorder.Visibility = Visibility.Collapsed;

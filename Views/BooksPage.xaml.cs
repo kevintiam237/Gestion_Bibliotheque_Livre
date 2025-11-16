@@ -26,12 +26,12 @@ namespace Gestion_Bibliotheque_Livre.Views
             resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(BooksPage).Assembly);
 
             InitializeComponent();
+
+            UpdateUIWithResources();
             // Charger les données des livres, auteurs et catégories ici
             ChargerLivres();
-            UpdateUIWithResources();
             ChargerAuteurs();
             ChargerCategories(); 
-            UpdateDefaultStyle();
         }
 
         public void UpdateUIWithResources()
@@ -72,11 +72,12 @@ namespace Gestion_Bibliotheque_Livre.Views
             RafraichirMessageErreur();
         }
 
-        /// <summary>
-        /// Charge la liste des livres depuis la base de données.
-        /// Inclut les relations : Auteur, DetailsLivre et LivreCategories → Categorie.
-        /// Recrée les objets Livre pour forcer le recalcul de DatePublicationFormatee selon la langue.
-        /// </summary>
+        public void ActualiserDonnees()
+        {
+            ChargerAuteurs();
+            ChargerCategories();
+            ChargerLivres();
+        }
         public void ChargerLivres()
         {
             using (var ListeDesLivres = new DbContextBibliotheque())
