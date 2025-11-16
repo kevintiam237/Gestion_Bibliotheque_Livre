@@ -1,4 +1,7 @@
-﻿using System.Resources;
+﻿using BibliothequeApp.Models;
+using Gestion_Bibliotheque_Livre.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,12 +15,45 @@ namespace Gestion_Bibliotheque_Livre.Views
 
         public AuthorsPage()
         {
-            resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(MainWindow).Assembly);
+            resourceManager = new ResourceManager("Gestion_Bibliotheque_Livre.Properties.Resources", typeof(AuthorsPage).Assembly);
             InitializeComponent();
             UpdateUIWithResources();
+            ChargerAuthors();
 
         }
+            
+        public void ChargerAuthors()
+        {
+            using (var ListeDesAutheurs = new DbContextBibliotheque())
+            {
+                var authors = ListeDesAutheurs.Auteurs
+                    .Include(a => a.Livres)
+                    .ToList();
 
+                var auteursAvecNombreLivres = authors.Select(a => new
+                {
+                    Id = a.Id,
+                    Nom = a.Nom,
+                    Prenom = a.Prenom,
+                    NombreLivres = a.Livres?.Count ?? 0
+                }).ToList();
+
+                DataGridAuthors.ItemsSource = auteursAvecNombreLivres;
+            }
+        }
+
+        private void DataG_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var authorselected = DataGridAuthors.SelectedItem as Auteur;
+            if(authorselected == null)
+            {
+                return;
+            }
+
+            TxtAuthorLastName.Text = authorselected.Nom;
+            TxtAuthorFirstName.Text = authorselected.Prenom;
+
+        }
         private void BtnAddAuthor_Click(object sender, RoutedEventArgs e)
         {
             // Votre logique existante
@@ -50,5 +86,9 @@ namespace Gestion_Bibliotheque_Livre.Views
             TxtBookDetails.Text = resourceManager.GetString("AuthorManagement");
 
         }
+    }
+
+    internal class Auteurs
+    {
     }
 }

@@ -43,6 +43,7 @@
                        ColumnHeaderStyle="{StaticResource DataGridColumnHeaderStyle}"
                       RowStyle="{StaticResource DataGridRowStyle}"
                       CellStyle="{StaticResource DataGridCellStyle}"
+                      SelectionChanged="DataG_SelectionChanged"
                       AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn 
@@ -101,7 +102,8 @@
                         x:Name="LblAuthorLastName"
                         Content="{x:Static properties:Resources.LastName}" 
                         Style="{StaticResource ModernLabelStyle}"/>
-                            <TextBox x:Name="TxtAuthorLastName" Style="{StaticResource ModernTextBoxStyle}"/>
+                            <TextBox x:Name="TxtAuthorLastName" 
+                                     Style="{StaticResource ModernTextBoxStyle}"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Margin="10">

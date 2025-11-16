@@ -1170,5 +1170,45 @@
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="LineHeight" Value="20"/>
         </Style>
+
+        <!-- Style ListBox multi-sélection -->
+        <Style x:Key="ModernListBoxStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="MaxHeight" Value="50"/>
+            <Setter Property="SelectionMode" Value="Multiple"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="8,4"/>
+                        <Setter Property="Margin" Value="0,2"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F0F9FF"/>
+                                <Setter Property="BorderBrush" Value="#BAE6FD"/>
+                                <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#60A5FA"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="BorderBrush" Value="#3B82F6"/>
+                                <Setter Property="BorderThickness" Value="1,1,1,1"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>

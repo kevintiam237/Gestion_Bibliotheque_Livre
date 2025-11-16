@@ -185,15 +185,15 @@
                         <TextBox x:Name="TxtCopies" Style="{StaticResource ModernTextBoxStyle}"/>
                     </StackPanel>
 
+                    
                     <StackPanel Grid.Column="3" Style="{StaticResource StackPanelStyle}">
-                        <Label 
-                                x:Name="LabelCategoriesBook"
-                                Content="{x:Static properties:Resources.Categories}" 
+                        <Label x:Name="LabelCategoriesBook"
+                               Content="{x:Static properties:Resources.Categories}"
                                Style="{StaticResource ModernLabelStyle}"/>
-                        <ComboBox x:Name="ComboBoxCategoriesSelect" 
-                                  Style="{StaticResource ModernComboBoxStyle}">
-                            <ComboBoxItem Content="Sélectionner / Select..."/>
-                        </ComboBox>
+                        <ListBox x:Name="ListBoxCategoriesSelect"
+                                 Style="{StaticResource ModernListBoxStyle}"
+                                 DisplayMemberPath="Nom"
+                                 SelectedValuePath="Id"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="4" 
